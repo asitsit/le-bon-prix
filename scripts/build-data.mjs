@@ -1,7 +1,7 @@
 // Transforme data/produits.csv en src/data/produits.json
 // Usage : node scripts/build-data.mjs
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -82,6 +82,7 @@ function main() {
     return entry;
   });
 
+  mkdirSync(path.dirname(JSON_PATH), { recursive: true });
   writeFileSync(JSON_PATH, JSON.stringify(produits, null, 2), "utf-8");
   console.log(`✓ ${produits.length} produits écrits dans src/data/produits.json`);
 }
