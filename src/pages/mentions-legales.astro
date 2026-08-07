@@ -1,0 +1,90 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Mentions légales — De saison" description="Informations légales concernant le site De saison.">
+  <article class="page">
+    <h1>Mentions légales</h1>
+
+    <p class="notice">
+      ⚠️ Cette page contient des informations à compléter avant la mise en ligne publique du site
+      (champs signalés entre crochets). Voir le récapitulatif fourni en fin de mise en place.
+    </p>
+
+    <h2>Éditeur du site</h2>
+    <p>
+      Le site De saison est édité par [Nom ou raison sociale de l'éditeur], [statut juridique le
+      cas échéant], domicilié(e) à [adresse]. Responsable de la publication : [nom du responsable
+      de publication]. Contact : [adresse e-mail de contact].
+    </p>
+
+    <h2>Hébergement</h2>
+    <p>
+      Le site est hébergé par Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis.
+    </p>
+
+    <h2>Propriété intellectuelle</h2>
+    <p>
+      L'ensemble des contenus présents sur ce site (textes, structure, identité visuelle) est la
+      propriété de l'éditeur du site, sauf mention contraire. Toute reproduction sans autorisation
+      est interdite.
+    </p>
+
+    <h2>Données personnelles</h2>
+    <p>
+      Ce site ne collecte aucune donnée personnelle par formulaire et n'utilise pas de cookie de
+      suivi ou de traceur publicitaire. La recherche fonctionne entièrement dans votre navigateur,
+      sans envoi de vos requêtes à un serveur.
+    </p>
+    <p>
+      Les polices de caractères sont chargées depuis les serveurs de Google Fonts, ce qui entraîne
+      une connexion technique à Google lors du chargement de la page. Aucune donnée personnelle
+      n'est transmise dans ce cadre au-delà de l'adresse IP nécessaire au chargement du fichier.
+    </p>
+
+    <h2>Précision sur les données affichées</h2>
+    <p>
+      Les informations de saisonnalité, de conservation et de prix sont fournies à titre indicatif.
+      Voir la page <a href="/qui-sommes-nous">Qui sommes-nous</a> pour le détail de leur origine et
+      de leur méthode de calcul.
+    </p>
+  </article>
+</Layout>
+
+<style>
+  .page {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .page h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-2xl);
+    margin: 0 0 var(--space-lg);
+  }
+
+  .page h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    margin: var(--space-lg) 0 var(--space-sm);
+  }
+
+  .page p {
+    line-height: 1.6;
+    margin: 0 0 var(--space-md);
+  }
+
+  .page a {
+    color: var(--color-accent);
+  }
+
+  .notice {
+    background: var(--color-saison-bientot-bg);
+    color: #6b4a0f;
+    border-radius: var(--radius-sm);
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--text-sm);
+  }
+</style>

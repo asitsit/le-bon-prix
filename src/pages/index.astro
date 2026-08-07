@@ -1,0 +1,155 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="De saison — Mangez local, au juste prix">
+  <section class="hero">
+    <img src="/logo.svg" alt="De saison" class="hero__logo" height="56" />
+    <h1>Mangez de saison, au juste prix.</h1>
+    <p class="hero__lead">
+      En un coup d'œil, sachez ce qui est vraiment de saison, comment le conserver et le cuisiner,
+      et combien il devrait vraiment coûter — au marché, au supermarché ou en bio.
+    </p>
+    <a href="/produits" class="cta">Voir les prix des fruits et légumes</a>
+  </section>
+
+  <section class="pitch">
+    <h2>Pourquoi manger de saison ?</h2>
+    <p>
+      Un fruit ou un légume cueilli à son moment est plus goûteux, plus riche en nutriments et
+      demande moins de ressources pour être produit et transporté. Hors saison, il vient souvent
+      de serres chauffées ou de l'autre bout du monde, avec un coût environnemental bien plus élevé.
+    </p>
+    <p>
+      Manger de saison, c'est aussi retrouver le rythme naturel des récoltes françaises : les
+      fraises au printemps, les tomates en été, les courges en automne, les poireaux en hiver.
+    </p>
+  </section>
+
+  <section class="pitch">
+    <h2>Pourquoi comparer les prix ?</h2>
+    <p>
+      Le prix d'un même fruit ou légume peut du simple au double selon qu'on l'achète au marché,
+      en grande surface ou en bio — et selon la saison. Hors saison, un produit importé coûte
+      presque toujours plus cher qu'un produit local en pleine récolte.
+    </p>
+    <p>
+      Notre objectif : afficher ces trois prix côte à côte, aussi vite qu'un ticket de balance,
+      pour que vous puissiez décider en un coup d'œil où et quand acheter.
+    </p>
+  </section>
+
+  <section class="steps">
+    <h2>Comment ça marche</h2>
+    <ol>
+      <li><strong>Cherchez</strong> un fruit ou un légume, ou filtrez par catégorie.</li>
+      <li><strong>Repérez</strong> s'il est de saison grâce au point de couleur.</li>
+      <li><strong>Comparez</strong> les prix marché, supermarché et bio sur sa fiche.</li>
+    </ol>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: var(--space-xl) 0;
+  }
+
+  .hero__logo {
+    margin-bottom: var(--space-md);
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-2xl);
+    margin: 0 0 var(--space-md);
+  }
+
+  .hero__lead {
+    max-width: 520px;
+    margin: 0 auto var(--space-lg);
+    color: #4a4536;
+    font-size: var(--text-lg);
+    line-height: 1.5;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--tap-target);
+    padding: 0 var(--space-lg);
+    background: var(--color-accent);
+    color: var(--color-papier);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: var(--text-base);
+    border-radius: var(--radius-sm);
+    transition: transform var(--dur-fast) ease;
+  }
+
+  .cta:hover,
+  .cta:focus-visible {
+    transform: translateY(-2px);
+  }
+
+  .pitch {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: var(--space-lg) 0;
+  }
+
+  .pitch h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-xl);
+    margin: 0 0 var(--space-md);
+  }
+
+  .pitch p {
+    line-height: 1.6;
+    margin: 0 0 var(--space-md);
+  }
+
+  .steps {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: var(--space-lg) 0 var(--space-xl);
+  }
+
+  .steps h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-xl);
+    margin: 0 0 var(--space-md);
+  }
+
+  .steps ol {
+    list-style: none;
+    counter-reset: step;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .steps li {
+    counter-increment: step;
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
+    background: var(--color-papier);
+    border: var(--border-dashed);
+    border-radius: var(--radius-sm);
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .steps li::before {
+    content: counter(step);
+    font-family: var(--font-mono);
+    color: var(--color-saison-ok);
+    font-weight: 500;
+  }
+</style>

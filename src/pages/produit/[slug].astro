@@ -1,0 +1,35 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ProductTicket from "../../components/ProductTicket.astro";
+import produits from "../../data/produits.json";
+
+export function getStaticPaths() {
+  return produits.map((p) => ({
+    params: { slug: p.slug },
+    props: { produit: p },
+  }));
+}
+
+const { produit } = Astro.props;
+---
+
+<Layout title={`${produit.nom} — De saison`}>
+  <a href="/produits" class="back">&larr; Retour à la recherche</a>
+  <div class="detail">
+    <ProductTicket produit={produit} />
+  </div>
+</Layout>
+
+<style>
+  .back {
+    display: inline-block;
+    margin-bottom: var(--space-lg);
+    color: var(--color-encre);
+    text-decoration: none;
+    font-size: var(--text-sm);
+  }
+
+  .detail {
+    padding-bottom: var(--space-lg);
+  }
+</style>

@@ -1,0 +1,205 @@
+---
+import SeasonBadge from "./SeasonBadge.astro";
+import { difficulteInfo } from "../lib/difficulte";
+import { lieuConservationLabel } from "../lib/conservation";
+import { composerDescription } from "../lib/description";
+
+interface Props {
+  produit: {
+    slug: string;
+    nom: string;
+    icone: string;
+    mois_saison: number[];
+    regions: string[];
+    prix_marche: number | null;
+    prix_supermarche: number | null;
+    prix_bio: number | null;
+    unite_prix: string;
+    conservation_lieu: string;
+    conservation_duree: string;
+    cuisson_recommandee: string[];
+    facilite_cuisson: string;
+    tip: string;
+    prix_maj: string;
+    prix_source: string;
+  };
+}
+
+const { produit } = Astro.props;
+
+function formatPrix(valeur: number | null, unite: string) {
+  if (valeur === null || Number.isNaN(valeur)) return "—";
+  return `${valeur.toFixed(2)} EUR/${unite}`;
+}
+
+const difficulte = difficulteInfo(produit.facilite_cuisson);
+const description = composerDescription(produit);
+---
+
+<article class="ticket">
+  <div class="ticket__header">
+    <span class="ticket__icone" aria-hidden="true">{produit.icone}</span>
+    <h1 class="ticket__nom">{produit.nom}</h1>
+    <SeasonBadge moisSaison={produit.mois_saison} />
+  </div>
+
+  <div class="ticket__separator"></div>
+
+  <dl class="ticket__prix">
+    <div class="ticket__prix-ligne">
+      <dt>Marché</dt>
+      <dd>{formatPrix(produit.prix_marche, produit.unite_prix)}</dd>
+    </div>
+    <div class="ticket__prix-ligne">
+      <dt>Supermarché</dt>
+      <dd>{formatPrix(produit.prix_supermarche, produit.unite_prix)}</dd>
+    </div>
+    <div class="ticket__prix-ligne">
+      <dt>Bio</dt>
+      <dd>{formatPrix(produit.prix_bio, produit.unite_prix)}</dd>
+    </div>
+  </dl>
+  <p class="ticket__prix-source">
+    Prix mis à jour le {produit.prix_maj} — Source : {produit.prix_source}
+  </p>
+
+  <div class="ticket__separator"></div>
+
+  <div class="ticket__meta">
+    <div class="ticket__meta-bloc">
+      <span class="ticket__meta-label">Difficulté</span>
+      <span class="ticket__etoiles" aria-label={`Difficulté : ${difficulte.label}`}>
+        {"★".repeat(difficulte.etoilesPleines)}<span class="ticket__etoiles--vides">{"★".repeat(difficulte.etoilesVides)}</span>
+        <span class="ticket__meta-texte">{difficulte.label}</span>
+      </span>
+    </div>
+    <div class="ticket__meta-bloc">
+      <span class="ticket__meta-label">Conservation</span>
+      <span class="ticket__meta-texte">{lieuConservationLabel(produit.conservation_lieu)}, {produit.conservation_duree}</span>
+    </div>
+  </div>
+
+  <div class="ticket__separator"></div>
+
+  <div class="ticket__texte">
+    {description.map((phrase) => <p>{phrase}</p>)}
+    <p class="ticket__tip">💡 {produit.tip}</p>
+  </div>
+</article>
+
+<style>
+  .ticket {
+    display: block;
+    max-width: 420px;
+    margin: 0 auto;
+    background: var(--color-papier);
+    border: var(--border-dashed);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg) var(--space-md);
+    color: var(--color-encre);
+    text-align: center;
+  }
+
+  .ticket__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .ticket__icone {
+    font-size: 2.75rem;
+    line-height: 1;
+  }
+
+  .ticket__nom {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-xl);
+    margin: var(--space-xs) 0 2px;
+  }
+
+  .ticket__separator {
+    border-top: var(--border-dashed);
+    margin: var(--space-md) 0;
+  }
+
+  .ticket__prix {
+    margin: 0;
+    max-width: 240px;
+    margin: 0 auto;
+  }
+
+  .ticket__prix-ligne {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    margin-top: 6px;
+  }
+
+  .ticket__prix-ligne dt,
+  .ticket__prix-ligne dd {
+    margin: 0;
+  }
+
+  .ticket__prix-source {
+    font-size: var(--text-xs);
+    color: #8a8368;
+    margin: var(--space-sm) 0 0;
+  }
+
+  .ticket__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    text-align: left;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .ticket__meta-bloc {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .ticket__meta-label {
+    font-size: var(--text-sm);
+    color: #4a4536;
+  }
+
+  .ticket__etoiles {
+    color: var(--color-accent);
+    letter-spacing: 1px;
+  }
+
+  .ticket__etoiles--vides {
+    color: var(--color-saison-non);
+  }
+
+  .ticket__meta-texte {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    margin-left: 6px;
+  }
+
+  .ticket__texte {
+    text-align: left;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: #4a4536;
+  }
+
+  .ticket__texte p {
+    margin: 0 0 var(--space-sm);
+  }
+
+  .ticket__tip {
+    background: var(--color-kraft);
+    border-radius: var(--radius-sm);
+    padding: var(--space-sm);
+    color: var(--color-encre);
+    margin-bottom: 0 !important;
+  }
+</style>

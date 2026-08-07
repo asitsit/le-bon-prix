@@ -1,0 +1,79 @@
+/* Design tokens — voir docs/02-direction-artistique.md pour le détail des choix */
+
+:root {
+  /* Couleurs */
+  --color-ardoise: #1f2b22;
+  --color-kraft: #efe6d3;
+  --color-papier: #fbf8f1;
+  --color-encre: #1f2b22;
+
+  --color-saison-ok: #639922;
+  --color-saison-ok-bg: #eaf3de;
+  --color-saison-bientot: #ba7517;
+  --color-saison-bientot-bg: #faeeda;
+  --color-saison-non: #888780;
+  --color-saison-non-bg: #efeee9;
+
+  --color-accent: #d93d2b;
+
+  /* Typographie */
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Public Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.25rem;
+
+  /* Espacements */
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+
+  /* Rayons / bordures */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --border-hairline: 1px solid var(--color-ardoise);
+  --border-dashed: 1px dashed var(--color-ardoise);
+
+  /* Cible tactile minimale */
+  --tap-target: 44px;
+
+  /* Mouvement */
+  --dur-fast: 150ms;
+  --dur-base: 200ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-kraft);
+  color: var(--color-encre);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}

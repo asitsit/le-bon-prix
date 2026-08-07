@@ -1,0 +1,16 @@
+{
+  "name": "de-saison",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build-data": "node scripts/build-data.mjs",
+    "dev": "npm run build-data && astro dev",
+    "build": "npm run build-data && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^4.16.0",
+    "fuse.js": "^7.0.0"
+  }
+}

@@ -1,0 +1,127 @@
+---
+import "../styles/tokens.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Fruits et légumes de saison : conservation, cuisson et prix, en un coup d'œil." } = Astro.props;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Public+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="site-header__inner">
+        <a href="/" class="site-header__logo">
+          <img src="/logo.svg" alt="De saison" height="32" />
+        </a>
+        <div class="site-header__links">
+          <a href="/produits">Voir les prix</a>
+          <a href="/qui-sommes-nous">Qui sommes-nous</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <p>De saison — les fruits et légumes de saison, au juste prix.</p>
+      <div class="site-footer__links">
+        <a href="/qui-sommes-nous">Qui sommes-nous</a>
+        <a href="/mentions-legales">Mentions légales</a>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  .site-header {
+    background: var(--color-ardoise);
+    padding: var(--space-md);
+  }
+
+  .site-header__inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .site-header__logo {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .site-header__logo img {
+    display: block;
+  }
+
+  .site-header__links {
+    display: flex;
+    gap: var(--space-md);
+  }
+
+  .site-header__links a {
+    color: var(--color-papier);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  .site-header__links a:hover,
+  .site-header__links a:focus-visible {
+    text-decoration: underline;
+  }
+
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: var(--space-lg) var(--space-md) var(--space-xl);
+  }
+
+  .site-footer {
+    border-top: var(--border-dashed);
+    padding: var(--space-lg) var(--space-md);
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    text-align: center;
+    color: #4a4536;
+    font-size: var(--text-sm);
+  }
+
+  .site-footer p {
+    margin: 0;
+  }
+
+  .site-footer__links {
+    display: flex;
+    gap: var(--space-md);
+  }
+
+  .site-footer__links a {
+    color: var(--color-encre);
+    font-weight: 500;
+  }
+</style>

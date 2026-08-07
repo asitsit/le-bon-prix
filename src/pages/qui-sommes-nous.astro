@@ -1,0 +1,75 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Qui sommes-nous — De saison" description="Pourquoi ce site existe et comment nous établissons nos prix.">
+  <article class="page">
+    <h1>Qui sommes-nous ?</h1>
+    <p>
+      De saison est un projet indépendant, né d'une frustration simple : il est souvent difficile
+      de savoir, en un coup d'œil, si un fruit ou un légume est vraiment de saison, et s'il est
+      vendu à un prix juste. Nous avons voulu un outil aussi rapide à consulter que la balance
+      d'un étal de marché.
+    </p>
+
+    <h2>Notre méthode pour la saisonnalité</h2>
+    <p>
+      Les mois de saison affichés sur chaque fiche correspondent à la période de production
+      principale en France métropolitaine. Cette indication reste volontairement simple : elle ne
+      tient pas compte des variations climatiques d'une année à l'autre, ni des particularités
+      régionales. Elle donne un repère fiable, pas une prévision météo.
+    </p>
+
+    <h2>D'où viennent les prix ?</h2>
+    <p>
+      C'est le point sur lequel nous voulons être les plus transparents. Au lancement du site, les
+      prix affichés sont des <strong>estimations internes</strong>, construites à partir d'ordres
+      de grandeur observés sur les circuits marché, grande distribution et bio en France. Ce ne
+      sont pas encore des données officielles.
+    </p>
+    <p>
+      Chaque fiche produit affiche la date de dernière mise à jour et la source du prix, afin que
+      vous puissiez toujours vérifier la fraîcheur de l'information. Notre feuille de route prévoit
+      l'intégration des données ouvertes de FranceAgriMer et du Réseau des Nouvelles des Marchés
+      (RNM), publiées sur data.gouv.fr sous licence ouverte, avec une mise à jour automatique
+      hebdomadaire. Cette évolution remplacera progressivement les estimations actuelles par des
+      prix réels et sourcés.
+    </p>
+
+    <h2>Une question, une remarque ?</h2>
+    <p>
+      Si vous repérez une erreur ou souhaitez nous signaler un prix qui vous semble éloigné de la
+      réalité, écrivez-nous à <a href="mailto:contact@de-saison.fr">contact@de-saison.fr</a>.
+    </p>
+  </article>
+</Layout>
+
+<style>
+  .page {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .page h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-2xl);
+    margin: 0 0 var(--space-lg);
+  }
+
+  .page h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    margin: var(--space-lg) 0 var(--space-sm);
+  }
+
+  .page p {
+    line-height: 1.6;
+    margin: 0 0 var(--space-md);
+  }
+
+  .page a {
+    color: var(--color-accent);
+  }
+</style>
