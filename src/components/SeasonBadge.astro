@@ -3,10 +3,14 @@ import { calculerStatutSaison } from "../lib/saison";
 
 interface Props {
   moisSaison: number[];
+  productionEurope?: boolean;
 }
 
-const { moisSaison } = Astro.props;
-const { statut, label } = calculerStatutSaison(moisSaison);
+const { moisSaison, productionEurope = true } = Astro.props;
+
+const { statut, label } = productionEurope
+  ? calculerStatutSaison(moisSaison)
+  : { statut: "importe" as const, label: "importé" };
 ---
 
 <span class={`badge badge--${statut}`}>
@@ -44,10 +48,12 @@ const { statut, label } = calculerStatutSaison(moisSaison);
     background: var(--color-saison-bientot);
   }
 
-  .badge--hors_saison {
+  .badge--hors_saison,
+  .badge--importe {
     color: var(--color-saison-non);
   }
-  .badge--hors_saison .badge__dot {
+  .badge--hors_saison .badge__dot,
+  .badge--importe .badge__dot {
     background: var(--color-saison-non);
   }
 </style>

@@ -3,6 +3,7 @@ import SeasonBadge from "./SeasonBadge.astro";
 import { difficulteInfo } from "../lib/difficulte";
 import { lieuConservationLabel } from "../lib/conservation";
 import { composerDescription } from "../lib/description";
+import { estProduitEnEurope } from "../lib/origine";
 
 interface Props {
   produit: {
@@ -10,6 +11,7 @@ interface Props {
     nom: string;
     icone: string;
     mois_saison: number[];
+    production_europe: string;
     regions: string[];
     prix_marche: number | null;
     prix_supermarche: number | null;
@@ -34,13 +36,15 @@ function formatPrix(valeur: number | null, unite: string) {
 
 const difficulte = difficulteInfo(produit.facilite_cuisson);
 const description = composerDescription(produit);
+const enEurope = estProduitEnEurope(produit.production_europe);
 ---
 
 <article class="ticket">
   <div class="ticket__header">
     <span class="ticket__icone" aria-hidden="true">{produit.icone}</span>
     <h1 class="ticket__nom">{produit.nom}</h1>
-    <SeasonBadge moisSaison={produit.mois_saison} />
+    <SeasonBadge moisSaison={produit.mois_saison} productionEurope={enEurope} />
+    {!enEurope && <span class="ticket__importe">🌍 Pas produit en Europe</span>}
   </div>
 
   <div class="ticket__separator"></div>
@@ -122,6 +126,17 @@ const description = composerDescription(produit);
   .ticket__separator {
     border-top: var(--border-dashed);
     margin: var(--space-md) 0;
+  }
+
+  .ticket__importe {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: #4a4536;
+    background: var(--color-kraft);
+    border-radius: 20px;
+    padding: 3px 10px;
   }
 
   .ticket__prix {

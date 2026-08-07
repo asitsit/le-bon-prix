@@ -1,12 +1,15 @@
 ---
 import SeasonBadge from "./SeasonBadge.astro";
 
+import { estProduitEnEurope } from "../lib/origine";
+
 interface Props {
   produit: {
     slug: string;
     nom: string;
     icone: string;
     mois_saison: number[];
+    production_europe: string;
   };
 }
 
@@ -16,7 +19,7 @@ const { produit } = Astro.props;
 <a href={`/produit/${produit.slug}`} class="mini-card">
   <span class="mini-card__icone" aria-hidden="true">{produit.icone}</span>
   <span class="mini-card__nom">{produit.nom}</span>
-  <SeasonBadge moisSaison={produit.mois_saison} />
+  <SeasonBadge moisSaison={produit.mois_saison} productionEurope={estProduitEnEurope(produit.production_europe)} />
 </a>
 
 <style>

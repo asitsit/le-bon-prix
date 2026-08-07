@@ -105,17 +105,27 @@ Cette logique reste volontairement simple au MVP (pas de prise en compte météo
 
 ---
 
-## 5. Intégration future des prix (V1.1, après validation du MVP)
+## 5. Intégration future des prix (V1.1)
 
 Rappel de la décision prise : démarrage **national**, source **FranceAgriMer / RNM** via data.gouv.fr (Licence Ouverte).
 
-Étapes techniques à prévoir (pas au tout premier MVP, mais à cadrer dès maintenant pour ne pas casser le schéma de données) :
+⚠️ **Mise à jour (vérifié en août 2026)** : contrairement à l'hypothèse initiale, il n'existe pas de
+CSV/API public en libre téléchargement pour les cotations RNM. Le dataset publié sur data.gouv.fr
+(`cotations-du-reseau-des-nouvelles-des-marches`) n'est mis à jour qu'une fois par an et pointe vers
+`visionet.franceagrimer.fr`, un tableau de bord interactif sans export automatisable. Un accès
+personnalisé (API ou export Excel) s'obtient sur demande auprès de `contact-rnm@franceagrimer.fr`.
+Voir `scripts/README.md` pour le détail.
 
-1. Script `scripts/fetch-prices.mjs` : téléchargement du fichier RNM hebdomadaire depuis data.gouv.fr.
-2. Mapping RNM → `slug` interne (les libellés produits RNM ne correspondent pas forcément 1:1 à vos noms — prévoir une table de correspondance `scripts/mapping-rnm.json`).
-3. Mise à jour de `produits.json` avec `prix_maj` (date) et `prix_source`.
-4. GitHub Action programmée (cron hebdomadaire) : exécute le script, commit le JSON mis à jour, déclenche le redéploiement.
-5. Affichage obligatoire sur chaque fiche : date de mise à jour + source — non négociable pour la crédibilité (cf. cadrage produit, section "manques identifiés").
+L'automatisation a néanmoins été construite pour être prête dès qu'un vrai accès sera obtenu :
+
+1. Script `scripts/fetch-prices.mjs` : lit un export `data/rnm-export.csv` (colonnes `produit,prix,unite,date`) — ✅ fait, fonctionne aujourd'hui avec un dépôt manuel du fichier, en attendant un accès API.
+2. Mapping RNM → `slug` interne dans `scripts/mapping-rnm.json` — ✅ fait pour les 78 produits d'origine européenne, avec des libellés à confirmer une fois un vrai export obtenu.
+3. Mise à jour de `produits.csv` avec `prix_maj` (date) et `prix_source` — ✅ fait.
+4. GitHub Action programmée (cron hebdomadaire, tous les lundis) : `.github/workflows/update-prices.yml` — ✅ fait, exécute le script, commit `data/produits.csv` et pousse si changement, ce qui déclenche le redéploiement Vercel.
+5. Affichage obligatoire sur chaque fiche : date de mise à jour + source — ✅ fait, non négociable pour la crédibilité (cf. cadrage produit, section "manques identifiés").
+
+`prix_supermarche` et `prix_bio` restent des estimations internes : le RNM ne couvre que les prix de
+gros/marché, une seconde source resterait à brancher pour les automatiser aussi.
 
 ---
 
