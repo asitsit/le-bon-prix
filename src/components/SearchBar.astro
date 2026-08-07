@@ -41,7 +41,7 @@ const indexData = produits.map((p) => ({
 
   const fuse = new Fuse(indexData, {
     keys: ["nom", "alias"],
-    threshold: 0.35,
+    threshold: 0.15,
     ignoreDiacritics: true,
   });
 
