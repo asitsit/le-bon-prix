@@ -39,11 +39,32 @@ const indexData = produits.map((p) => ({
   const dataEl = document.getElementById("search-index-data");
   const indexData = JSON.parse(dataEl?.textContent ?? "[]");
 
+  function normaliser(texte: string): string {
+    return texte
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "")
+      .toLowerCase();
+  }
+
+  const indexNormalise = indexData.map((p: { slug: string; nom: string; alias: string }) => ({
+    slug: p.slug,
+    texte: normaliser(`${p.nom} ${p.alias}`),
+  }));
+
+  // Recherche floue : utilisée uniquement en repli, si aucune correspondance directe n'est trouvée
+  // (tolère les fautes de frappe, ex. "framboize" -> "framboise")
   const fuse = new Fuse(indexData, {
     keys: ["nom", "alias"],
-    threshold: 0.15,
+    threshold: 0.3,
     ignoreDiacritics: true,
   });
+
+  function rechercherSlugs(query: string): Set<string> {
+    const q = normaliser(query.trim());
+    const parSousChaine = indexNormalise.filter((p) => p.texte.includes(q)).map((p) => p.slug);
+    if (parSousChaine.length > 0) return new Set(parSousChaine);
+    return new Set(fuse.search(query).map((r) => r.item.slug));
+  }
 
   const input = document.getElementById("search-input") as HTMLInputElement;
   const filterButtons = Array.from(document.querySelectorAll<HTMLButtonElement>(".filter"));
@@ -54,7 +75,7 @@ const indexData = produits.map((p) => ({
   function applyFilter() {
     const query = input?.value.trim() ?? "";
     const cards = allCards();
-    const matchedSlugs = query ? new Set(fuse.search(query).map((r) => r.item.slug)) : null;
+    const matchedSlugs = query ? rechercherSlugs(query) : null;
     const filtreActif = Boolean(query) || currentType !== "tous";
 
     cards.forEach((card) => {
