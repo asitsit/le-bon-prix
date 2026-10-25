@@ -1,9 +1,9 @@
-name: Mise à jour hebdomadaire des prix
+name: Mise à jour des prix (RNM FranceAgriMer)
 
 on:
   schedule:
-    # Tous les lundis à 6h00 UTC
-    - cron: "0 6 * * 1"
+    # Mardi et vendredi à 6h00 UTC : nouveaux prix de détail hebdomadaires
+    - cron: "0 6 * * 2,5"
   workflow_dispatch: {}
 
 permissions:
@@ -24,20 +24,20 @@ jobs:
       - name: Installer les dépendances
         run: npm ci
 
-      - name: Récupérer les nouveaux prix
+      - name: Récupérer les prix RNM
         run: node scripts/fetch-prices.mjs
 
-      - name: Régénérer produits.json
-        run: node scripts/build-data.mjs
+      - name: Vérifier que le site se construit
+        run: npm run build
 
       - name: Commit et push si changement
         run: |
           git config user.name "de-saison-bot"
           git config user.email "actions@users.noreply.github.com"
-          if git diff --quiet -- data/produits.csv; then
-            echo "Aucun changement de prix cette semaine."
+          if git diff --quiet -- data/prix-rnm.json data/prix-historique.json; then
+            echo "Aucun changement de prix."
             exit 0
           fi
-          git add data/produits.csv
-          git commit -m "chore(prices): mise à jour hebdomadaire des prix marché"
+          git add data/prix-rnm.json data/prix-historique.json
+          git commit -m "chore(prix): relevé RNM du $(date -u +%Y-%m-%d)"
           git push

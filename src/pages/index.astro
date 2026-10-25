@@ -1,155 +1,136 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import CatalogueFilters from "../components/CatalogueFilters.astro";
+import ProductCard from "../components/ProductCard.astro";
+import Icon from "../components/Icon.astro";
+import { MOIS_NOMS } from "../lib/mois";
+import { moisCourant } from "../lib/saison";
+import produitsJson from "../data/produits.json";
+import type { Produit } from "../lib/types";
+
+const produits = produitsJson as Produit[];
+const lettreDe = (nom: string) => nom.normalize("NFD").replace(/\p{Diacritic}/gu, "").charAt(0).toUpperCase();
+
+// Produits déjà triés par ordre alphabétique (scripts/build-data.mjs) : on les regroupe par initiale
+const groupes = new Map<string, Produit[]>();
+for (const p of produits) {
+  const l = lettreDe(p.nom);
+  groupes.set(l, [...(groupes.get(l) ?? []), p]);
+}
 ---
 
-<Layout title="De saison — Mangez local, au juste prix">
-  <section class="hero">
-    <img src="/logo.svg" alt="De saison" class="hero__logo" height="56" />
-    <h1>Mangez de saison, au juste prix.</h1>
-    <p class="hero__lead">
-      En un coup d'œil, sachez ce qui est vraiment de saison, comment le conserver et le cuisiner,
-      et combien il devrait vraiment coûter — au marché, au supermarché ou en bio.
-    </p>
-    <a href="/produits" class="cta">Voir les prix des fruits et légumes</a>
-  </section>
-
-  <section class="pitch">
-    <h2>Pourquoi manger de saison ?</h2>
-    <p>
-      Un fruit ou un légume cueilli à son moment est plus goûteux, plus riche en nutriments et
-      demande moins de ressources pour être produit et transporté. Hors saison, il vient souvent
-      de serres chauffées ou de l'autre bout du monde, avec un coût environnemental bien plus élevé.
-    </p>
-    <p>
-      Manger de saison, c'est aussi retrouver le rythme naturel des récoltes françaises : les
-      fraises au printemps, les tomates en été, les courges en automne, les poireaux en hiver.
+<Layout title="De saison — tous les fruits et légumes, de A à Z" description="Tous les fruits et légumes de A à Z : de saison ou non, prix en supermarché, en bio et au marché.">
+  <section class="intro">
+    <h1 class="titre-page">Fruits &amp; légumes de A à Z</h1>
+    <p class="sous-titre-page">
+      <Icon name="calendar" size={16} /> En <strong data-mois-courant>{MOIS_NOMS[moisCourant() - 1]}</strong>, repérez d'un coup d'œil ce qui est de saison.
     </p>
   </section>
 
-  <section class="pitch">
-    <h2>Pourquoi comparer les prix ?</h2>
-    <p>
-      Le prix d'un même fruit ou légume peut du simple au double selon qu'on l'achète au marché,
-      en grande surface ou en bio — et selon la saison. Hors saison, un produit importé coûte
-      presque toujours plus cher qu'un produit local en pleine récolte.
-    </p>
-    <p>
-      Notre objectif : afficher ces trois prix côte à côte, aussi vite qu'un ticket de balance,
-      pour que vous puissiez décider en un coup d'œil où et quand acheter.
-    </p>
-  </section>
+  <div class="barre-filtres">
+    <CatalogueFilters />
+  </div>
 
-  <section class="steps">
-    <h2>Comment ça marche</h2>
-    <ol>
-      <li><strong>Cherchez</strong> un fruit ou un légume, ou filtrez par catégorie.</li>
-      <li><strong>Repérez</strong> s'il est de saison grâce au point de couleur.</li>
-      <li><strong>Comparez</strong> les prix marché, supermarché et bio sur sa fiche.</li>
-    </ol>
-  </section>
+  <div data-catalogue>
+    {
+      [...groupes].map(([lettre, liste]) => (
+        <section class="groupe" data-groupe aria-labelledby={`lettre-${lettre}`}>
+          <h2 class="groupe__lettre" id={`lettre-${lettre}`}>{lettre}</h2>
+          <div class="grille">
+            {liste.map((p) => (
+              <ProductCard produit={p} />
+            ))}
+          </div>
+        </section>
+      ))
+    }
+
+    <div class="vide" data-vide hidden>
+      <p><strong>Aucun produit ne correspond.</strong></p>
+      <p>Vérifiez l'orthographe, ou proposez-nous de l'ajouter.</p>
+      <div class="vide__actions">
+        <button type="button" class="btn" data-reinitialiser>Effacer les filtres</button>
+        <a class="btn btn--fantome" href="/suggestions">Suggérer un produit</a>
+      </div>
+    </div>
+  </div>
 </Layout>
 
-<style>
-  .hero {
-    text-align: center;
-    padding: var(--space-xl) 0;
-  }
+<script>
+  import "../scripts/catalogue";
+</script>
 
-  .hero__logo {
+<style>
+  .intro {
     margin-bottom: var(--space-md);
   }
 
-  .hero h1 {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: var(--text-2xl);
-    margin: 0 0 var(--space-md);
+  .intro :global(.icon) {
+    margin-top: -3px;
   }
 
-  .hero__lead {
-    max-width: 520px;
-    margin: 0 auto var(--space-lg);
-    color: #4a4536;
-    font-size: var(--text-lg);
-    line-height: 1.5;
+  .barre-filtres {
+    margin-bottom: var(--space-lg);
   }
 
-  .cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: var(--tap-target);
-    padding: 0 var(--space-lg);
-    background: var(--color-accent);
-    color: var(--color-papier);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: var(--text-base);
-    border-radius: var(--radius-sm);
-    transition: transform var(--dur-fast) ease;
+  .groupe {
+    margin-bottom: var(--space-lg);
+    scroll-margin-top: 80px;
   }
 
-  .cta:hover,
-  .cta:focus-visible {
-    transform: translateY(-2px);
-  }
-
-  .pitch {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: var(--space-lg) 0;
-  }
-
-  .pitch h2 {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: var(--text-xl);
-    margin: 0 0 var(--space-md);
-  }
-
-  .pitch p {
-    line-height: 1.6;
-    margin: 0 0 var(--space-md);
-  }
-
-  .steps {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: var(--space-lg) 0 var(--space-xl);
-  }
-
-  .steps h2 {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: var(--text-xl);
-    margin: 0 0 var(--space-md);
-  }
-
-  .steps ol {
-    list-style: none;
-    counter-reset: step;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-  }
-
-  .steps li {
-    counter-increment: step;
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-sm);
-    background: var(--color-papier);
-    border: var(--border-dashed);
-    border-radius: var(--radius-sm);
-    padding: var(--space-sm) var(--space-md);
-  }
-
-  .steps li::before {
-    content: counter(step);
+  .groupe__lettre {
     font-family: var(--font-mono);
-    color: var(--color-saison-ok);
     font-weight: 500;
+    font-size: var(--text-sm);
+    color: var(--color-encre-douce);
+    margin: 0 0 var(--space-xs);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .groupe__lettre::after {
+    content: "";
+    flex: 1;
+    border-top: var(--border-dashed);
+    opacity: 0.4;
+  }
+
+  .grille {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+
+  .vide {
+    text-align: center;
+    padding: var(--space-xl) var(--space-md);
+    border: var(--border-dashed);
+    border-radius: var(--radius-md);
+    background: var(--color-papier);
+  }
+
+  .vide p {
+    margin: 0 0 var(--space-xs);
+  }
+
+  .vide__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-xs);
+    margin-top: var(--space-md);
+  }
+
+  @media (min-width: 640px) {
+    .grille {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grille {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 </style>

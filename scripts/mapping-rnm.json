@@ -1,236 +1,91 @@
 {
-  "abricot": [
-    "ABRICOT"
-  ],
-  "cassis": [
-    "CASSIS"
-  ],
-  "cerise": [
-    "CERISE"
-  ],
-  "citron": [
-    "CITRON"
-  ],
-  "clementine": [
-    "CLÉMENTINE"
-  ],
-  "coing": [
-    "COING"
-  ],
-  "figue": [
-    "FIGUE"
-  ],
-  "fraise": [
-    "FRAISE"
-  ],
-  "framboise": [
-    "FRAMBOISE"
-  ],
-  "groseille": [
-    "GROSEILLE"
-  ],
-  "kiwi": [
-    "KIWI"
-  ],
-  "mandarine": [
-    "MANDARINE"
-  ],
-  "melon": [
-    "MELON"
-  ],
-  "mirabelle": [
-    "MIRABELLE"
-  ],
-  "myrtille": [
-    "MYRTILLE"
-  ],
-  "nectarine": [
-    "NECTARINE"
-  ],
-  "noisette": [
-    "NOISETTE"
-  ],
-  "noix": [
-    "NOIX"
-  ],
-  "orange": [
-    "ORANGE"
-  ],
-  "pamplemousse": [
-    "PAMPLEMOUSSE"
-  ],
-  "pasteque": [
-    "PASTÈQUE"
-  ],
-  "peche": [
-    "PÊCHE"
-  ],
-  "poire": [
-    "POIRE"
-  ],
-  "pomme": [
-    "POMME"
-  ],
-  "prune": [
-    "PRUNE"
-  ],
-  "quetsche": [
-    "QUETSCHE"
-  ],
-  "raisin": [
-    "RAISIN"
-  ],
-  "rhubarbe": [
-    "RHUBARBE"
-  ],
-  "ail": [
-    "AIL"
-  ],
-  "artichaut": [
-    "ARTICHAUT"
-  ],
-  "asperge": [
-    "ASPERGE"
-  ],
-  "aubergine": [
-    "AUBERGINE"
-  ],
-  "betterave": [
-    "BETTERAVE"
-  ],
-  "blette": [
-    "BLETTE"
-  ],
-  "brocoli": [
-    "BROCOLI"
-  ],
-  "carotte": [
-    "CAROTTE"
-  ],
-  "celeri_branche": [
-    "CÉLERI BRANCHE"
-  ],
-  "celeri_rave": [
-    "CÉLERI RAVE"
-  ],
-  "champignon_de_paris": [
-    "CHAMPIGNON DE PARIS"
-  ],
-  "chou_blanc": [
-    "CHOU BLANC"
-  ],
-  "chou_rouge": [
-    "CHOU ROUGE"
-  ],
-  "chou_de_bruxelles": [
-    "CHOU DE BRUXELLES"
-  ],
-  "chou_fleur": [
-    "CHOU-FLEUR"
-  ],
-  "concombre": [
-    "CONCOMBRE"
-  ],
-  "courge_butternut": [
-    "COURGE BUTTERNUT"
-  ],
-  "courge_potimarron": [
-    "POTIMARRON"
-  ],
-  "courgette": [
-    "COURGETTE"
-  ],
-  "cresson": [
-    "CRESSON"
-  ],
-  "echalote": [
-    "ÉCHALOTE"
-  ],
-  "endive": [
-    "ENDIVE"
-  ],
-  "epinard": [
-    "ÉPINARD"
-  ],
-  "fenouil": [
-    "FENOUIL"
-  ],
-  "haricot_vert": [
-    "HARICOT VERT"
-  ],
-  "laitue": [
-    "LAITUE"
-  ],
-  "mais_doux": [
-    "MAÏS DOUX"
-  ],
-  "navet": [
-    "NAVET"
-  ],
-  "oignon": [
-    "OIGNON"
-  ],
-  "panais": [
-    "PANAIS"
-  ],
-  "petit_pois": [
-    "PETIT POIS"
-  ],
-  "poireau": [
-    "POIREAU"
-  ],
-  "poivron": [
-    "POIVRON"
-  ],
-  "pomme_de_terre": [
-    "POMME DE TERRE"
-  ],
-  "potiron": [
-    "POTIRON"
-  ],
-  "radis": [
-    "RADIS"
-  ],
-  "salsifis": [
-    "SALSIFIS"
-  ],
-  "tomate": [
-    "TOMATE"
-  ],
-  "topinambour": [
-    "TOPINAMBOUR"
-  ],
-  "banane": [
-    "BANANE"
-  ],
-  "litchi": [
-    "LITCHI"
-  ],
-  "igname": [
-    "IGNAME"
-  ],
-  "gombo": [
-    "GOMBO"
-  ],
-  "grenade": [
-    "GRENADE"
-  ],
-  "kaki": [
-    "KAKI"
-  ],
-  "amande": [
-    "AMANDE"
-  ],
-  "patate_douce": [
-    "PATATE DOUCE"
-  ],
-  "chou_chinois": [
-    "CHOU CHINOIS"
-  ],
-  "piment": [
-    "PIMENT"
-  ],
-  "germes_de_soja": [
-    "GERMES DE SOJA"
-  ]
+  "_doc": "Associe chaque slug aux libellés RNM. 'motifs' = début du libellé (espèce en MAJUSCULES, sans accents). 'contient' = mot obligatoire dans le libellé (variété). 'exclure' = mots qui écartent une ligne. En cas de conflit, la règle la plus spécifique gagne (contient > motif le plus long). Voir scripts/README.md.",
+  "abricot": { "motifs": ["ABRICOT"] },
+  "cassis": { "motifs": ["CASSIS"] },
+  "cerise": { "motifs": ["CERISE"] },
+  "citron": { "motifs": ["CITRON"], "exclure": ["vert"] },
+  "clementine": { "motifs": ["CLEMENTINE"] },
+  "coing": { "motifs": ["COING"] },
+  "figue": { "motifs": ["FIGUE"] },
+  "fraise": { "motifs": ["FRAISE"] },
+  "framboise": { "motifs": ["FRAMBOISE"] },
+  "groseille": { "motifs": ["GROSEILLE"] },
+  "kiwi": { "motifs": ["KIWI"] },
+  "mandarine": { "motifs": ["MANDARINE"] },
+  "melon": { "motifs": ["MELON"] },
+  "mirabelle": { "motifs": ["MIRABELLE", "PRUNE"], "contient": "mirabelle" },
+  "myrtille": { "motifs": ["MYRTILLE"] },
+  "nectarine": { "motifs": ["NECTARINE", "PECHE-NECTARINE"] },
+  "noisette": { "motifs": ["NOISETTE"] },
+  "noix": { "motifs": ["NOIX"] },
+  "orange": { "motifs": ["ORANGE"] },
+  "pamplemousse": { "motifs": ["POMELOS", "PAMPLEMOUSSE"] },
+  "pasteque": { "motifs": ["PASTEQUE"] },
+  "peche": { "motifs": ["PECHE"] },
+  "poire": { "motifs": ["POIRE"] },
+  "pomme": { "motifs": ["POMME"] },
+  "prune": { "motifs": ["PRUNE"] },
+  "quetsche": { "motifs": ["PRUNE", "QUETSCHE"], "contient": "quetsche" },
+  "raisin": { "motifs": ["RAISIN"] },
+  "rhubarbe": { "motifs": ["RHUBARBE"] },
+  "ail": { "motifs": ["AIL"] },
+  "artichaut": { "motifs": ["ARTICHAUT"] },
+  "asperge": { "motifs": ["ASPERGE"] },
+  "aubergine": { "motifs": ["AUBERGINE"] },
+  "betterave": { "motifs": ["BETTERAVE ROUGE", "BETTERAVE"] },
+  "blette": { "motifs": ["BETTE", "BLETTE"] },
+  "brocoli": { "motifs": ["CHOU BROCOLI", "BROCOLI"] },
+  "carotte": { "motifs": ["CAROTTE"] },
+  "celeri_branche": { "motifs": ["CELERI-BRANCHE", "CELERI BRANCHE"] },
+  "celeri_rave": { "motifs": ["CELERI-RAVE", "CELERI RAVE"] },
+  "champignon_de_paris": { "motifs": ["CHAMPIGNON DE PARIS"] },
+  "chou_blanc": { "motifs": ["CHOU"], "contient": "blanc" },
+  "chou_rouge": { "motifs": ["CHOU"], "contient": "rouge" },
+  "chou_de_bruxelles": { "motifs": ["CHOU DE BRUXELLES"] },
+  "chou_fleur": { "motifs": ["CHOU FLEUR", "CHOU-FLEUR"] },
+  "concombre": { "motifs": ["CONCOMBRE"], "exclure": ["mini"] },
+  "courge_butternut": { "motifs": ["COURGE"], "contient": "butternut" },
+  "courge_potimarron": { "motifs": ["COURGE"], "contient": "potimarron" },
+  "courgette": { "motifs": ["COURGETTE"], "exclure": ["ronde"] },
+  "cresson": { "motifs": ["CRESSON"] },
+  "echalote": { "motifs": ["ECHALOTE"] },
+  "endive": { "motifs": ["ENDIVE"] },
+  "epinard": { "motifs": ["EPINARD"] },
+  "fenouil": { "motifs": ["FENOUIL"] },
+  "haricot_vert": { "motifs": ["HARICOT VERT"] },
+  "laitue": { "motifs": ["LAITUE"] },
+  "mais_doux": { "motifs": ["MAIS DOUX", "MAIS"] },
+  "navet": { "motifs": ["NAVET"] },
+  "oignon": { "motifs": ["OIGNON"], "exclure": ["botte"] },
+  "panais": { "motifs": ["PANAIS"] },
+  "petit_pois": { "motifs": ["POIS"], "exclure": ["chiche", "gourmand", "mange-tout"] },
+  "poireau": { "motifs": ["POIREAU"] },
+  "poivron": { "motifs": ["POIVRON"] },
+  "pomme_de_terre": { "motifs": ["POMME DE TERRE"] },
+  "potiron": { "motifs": ["POTIRON"] },
+  "radis": { "motifs": ["RADIS"], "exclure": ["noir"] },
+  "salsifis": { "motifs": ["SALSIFIS", "SCORSONERE"] },
+  "tomate": { "motifs": ["TOMATE"], "exclure": ["cerise", "cocktail"] },
+  "topinambour": { "motifs": ["TOPINAMBOUR"] },
+  "banane": { "motifs": ["BANANE"], "exclure": ["plantain"] },
+  "litchi": { "motifs": ["LITCHI"] },
+  "igname": { "motifs": ["IGNAME"] },
+  "gombo": { "motifs": ["GOMBO"] },
+  "grenade": { "motifs": ["GRENADE"] },
+  "kaki": { "motifs": ["KAKI"] },
+  "amande": { "motifs": ["AMANDE"] },
+  "patate_douce": { "motifs": ["PATATE DOUCE"] },
+  "chou_chinois": { "motifs": ["CHOU"], "contient": "chinois" },
+  "piment": { "motifs": ["PIMENT"] },
+  "germes_de_soja": { "motifs": ["GERMES DE SOJA", "SOJA"] },
+  "ananas": { "motifs": ["ANANAS"] },
+  "mangue": { "motifs": ["MANGUE"] },
+  "avocat": { "motifs": ["AVOCAT"] },
+  "fruit_de_la_passion": { "motifs": ["FRUIT DE LA PASSION"] },
+  "papaye": { "motifs": ["PAPAYE"] },
+  "noix_de_coco": { "motifs": ["NOIX DE COCO"] },
+  "citron_vert": { "motifs": ["LIME", "CITRON VERT"] },
+  "datte": { "motifs": ["DATTE"] },
+  "gingembre": { "motifs": ["GINGEMBRE"] },
+  "physalis": { "motifs": ["PHYSALIS"] }
 }

@@ -18,9 +18,23 @@ Le site est disponible sur `http://localhost:4321`.
 Voir `docs/01-cadrage-technique.md` pour le détail de l'architecture, et `docs/02-direction-artistique.md` pour la direction artistique (couleurs, typographie, composants).
 
 - `data/produits.csv` — source éditable des données produit. Les champs à valeurs multiples (`alias`, `regions`, `cuisson_recommandee`) sont séparés par `;` à l'intérieur d'une cellule.
-- `scripts/build-data.mjs` — transforme le CSV en `src/data/produits.json`.
-- `src/components/ProductTicket.astro` — la carte produit (élément signature de la DA, style ticket de balance).
-- `src/lib/saison.ts` — calcul du statut "de saison / bientôt / hors saison".
+- `data/prix-rnm.json`, `data/prix-historique.json` — prix réels FranceAgriMer/RNM, générés par `scripts/fetch-prices.mjs` (ne pas éditer).
+- `data/credits-images.json` + `public/produits/*.webp` — photos détourées et leurs crédits.
+- `scripts/build-data.mjs` — fusionne tout cela dans `src/data/produits.json`.
+- `src/pages/` — `index` (tous les produits A→Z), `de-saison`, `liste` (liste de courses), `suggestions`, `produit/[slug]`, `credits`.
+- `src/scripts/` — code navigateur : saison à la date du jour, liste de courses (localStorage), filtres.
+
+## Prix réels
+
+```bash
+node scripts/fetch-prices.mjs   # récupère les derniers prix RNM, puis relancer npm run dev
+```
+
+Automatisé deux fois par semaine par GitHub Actions. Détails : `scripts/README.md`.
+
+## Formulaire de suggestions
+
+Les suggestions sont envoyées à Formspree (`https://formspree.io/f/myeekkaw`) et arrivent par e-mail sur le compte Formspree. Pour changer de formulaire, définir `PUBLIC_SUGGESTIONS_ENDPOINT` (voir `.env.example`).
 
 ## Ajouter un produit
 
@@ -34,5 +48,4 @@ En ouvrant ce dossier dans VSC avec Claude Code, commencer par lui faire lire `d
 
 ## Prochaines étapes (voir docs/01-cadrage-technique.md, section 8)
 
-- V1.1 : automatiser la mise à jour des prix depuis les données ouvertes FranceAgriMer / RNM (data.gouv.fr).
-- V2 : base de recettes liée aux produits via leur `slug`.
+- V2 : base de recettes liée aux produits via leur `slug`, favoris et liste de courses synchronisée (base de données).

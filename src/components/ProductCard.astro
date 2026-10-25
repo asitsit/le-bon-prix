@@ -1,0 +1,168 @@
+---
+import SeasonBadge from "./SeasonBadge.astro";
+import ProductImage from "./ProductImage.astro";
+import Icon from "./Icon.astro";
+import { estProduitEnEurope } from "../lib/origine";
+import { calculerStatutSaison } from "../lib/saison";
+import { formatEuros, prixPrincipal, SERIES } from "../lib/prix";
+import type { Produit } from "../lib/types";
+
+interface Props {
+  produit: Produit;
+}
+
+const { produit } = Astro.props;
+
+const enEurope = estProduitEnEurope(produit.production_europe);
+const normaliser = (t: string) => t.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+const texte = normaliser([produit.nom, ...produit.alias].join(" "));
+const lettre = normaliser(produit.nom).charAt(0).toUpperCase();
+const principal = prixPrincipal(produit);
+const { statut } = calculerStatutSaison(produit.mois_saison, undefined, enEurope);
+---
+
+<article
+  class="card"
+  data-card
+  data-slug={produit.slug}
+  data-texte={texte}
+  data-type={produit.type}
+  data-lettre={lettre}
+  data-saison
+  data-mois={produit.mois_saison.join(",")}
+  data-europe={enEurope ? "1" : "0"}
+  data-statut={statut}
+>
+  <a href={`/produit/${produit.slug}`} class="card__lien">
+    <span class="card__visuel">
+      <ProductImage src={produit.image} nom={produit.nom} taille={64} />
+    </span>
+    <span class="card__corps">
+      <span class="card__nom">{produit.nom}</span>
+      <SeasonBadge moisSaison={produit.mois_saison} productionEurope={enEurope} />
+      {
+        principal && (
+          <span class="card__prix">
+            <span class="card__prix-valeur">{formatEuros(principal.prix.valeur)}</span>
+            <span class="card__prix-unite">/{principal.prix.unite} · {SERIES[principal.serie].label.toLowerCase()}</span>
+          </span>
+        )
+      }
+    </span>
+  </a>
+  <button
+    type="button"
+    class="card__ajout"
+    data-liste-toggle={produit.slug}
+    data-nom={produit.nom}
+    aria-pressed="false"
+    aria-label={`Ajouter ${produit.nom} à ma liste`}
+  >
+    <Icon name="plus" size={20} class="card__ajout-plus" />
+    <Icon name="check" size={20} class="card__ajout-check" />
+  </button>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    background: var(--color-papier);
+    border: var(--border-dashed);
+    border-radius: var(--radius-md);
+    transition: transform var(--dur-fast) ease, border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+  }
+
+  .card[hidden] {
+    display: none;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-encre);
+    box-shadow: 0 6px 0 -2px var(--color-kraft-fonce);
+  }
+
+  .card__lien {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs) 0 var(--space-xs) var(--space-xs);
+    text-decoration: none;
+    color: inherit;
+    border-radius: var(--radius-md);
+  }
+
+  .card__visuel {
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-sm);
+    background: radial-gradient(circle at 50% 60%, var(--color-kraft) 0 55%, transparent 56%);
+  }
+
+  .card__corps {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .card__nom {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-base);
+    line-height: 1.2;
+  }
+
+  .card__prix {
+    font-size: var(--text-xs);
+    color: var(--color-encre-douce);
+  }
+
+  .card__prix-valeur {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    color: var(--color-encre);
+  }
+
+  .card__ajout {
+    flex-shrink: 0;
+    align-self: center;
+    width: var(--tap-target);
+    height: var(--tap-target);
+    margin-right: var(--space-xs);
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-ardoise);
+    background: transparent;
+    color: var(--color-encre);
+    cursor: pointer;
+    transition: background var(--dur-fast) ease, color var(--dur-fast) ease, transform var(--dur-fast) ease;
+  }
+
+  .card__ajout:active {
+    transform: scale(0.92);
+  }
+
+  .card__ajout[aria-pressed="true"] {
+    background: var(--color-saison-ok);
+    border-color: var(--color-saison-ok);
+    color: var(--color-papier);
+  }
+
+  .card__ajout :global(.card__ajout-check),
+  .card__ajout[aria-pressed="true"] :global(.card__ajout-plus) {
+    display: none;
+  }
+
+  .card__ajout[aria-pressed="true"] :global(.card__ajout-check) {
+    display: inline-block;
+  }
+</style>

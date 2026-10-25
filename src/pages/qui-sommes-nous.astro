@@ -22,24 +22,29 @@ import Layout from "../layouts/Layout.astro";
 
     <h2>D'où viennent les prix ?</h2>
     <p>
-      C'est le point sur lequel nous voulons être les plus transparents. Au lancement du site, les
-      prix affichés sont des <strong>estimations internes</strong>, construites à partir d'ordres
-      de grandeur observés sur les circuits marché, grande distribution et bio en France. Ce ne
-      sont pas encore des données officielles.
+      C'est le point sur lequel nous voulons être les plus transparents. Chaque prix est marqué de
+      sa source sur la fiche produit :
     </p>
-    <p>
-      Chaque fiche produit affiche la date de dernière mise à jour et la source du prix, afin que
-      vous puissiez toujours vérifier la fraîcheur de l'information. Notre feuille de route prévoit
-      l'intégration des données ouvertes de FranceAgriMer et du Réseau des Nouvelles des Marchés
-      (RNM), publiées sur data.gouv.fr sous licence ouverte, avec une mise à jour automatique
-      hebdomadaire. Cette évolution remplacera progressivement les estimations actuelles par des
-      prix réels et sourcés.
-    </p>
+    <ul>
+      <li>
+        <strong>RNM</strong> : prix réels publiés par le
+        <a href="https://rnm.franceagrimer.fr" rel="noopener">Réseau des Nouvelles des Marchés</a>
+        (FranceAgriMer), sous licence ouverte. Nous reprenons chaque semaine les prix de détail
+        relevés en grande surface et en magasins bio. Lorsqu'un produit a plusieurs cotations (variétés, calibres), nous affichons la
+        médiane, en privilégiant l'origine France.
+      </li>
+      <li>
+        <strong>Estimation</strong> : quand le RNM ne cote pas un produit (ou pour le prix au
+        marché de plein air, qu'il ne suit pas), nous affichons un ordre de grandeur établi par nos
+        soins, avec sa date de mise à jour.
+      </li>
+    </ul>
 
     <h2>Une question, une remarque ?</h2>
     <p>
       Si vous repérez une erreur ou souhaitez nous signaler un prix qui vous semble éloigné de la
-      réalité, écrivez-nous à <a href="mailto:contact@de-saison.fr">contact@de-saison.fr</a>.
+      réalité, utilisez le <a href="/suggestions">formulaire de suggestions</a> ou écrivez-nous à
+      <a href="mailto:contact@de-saison.fr">contact@de-saison.fr</a>.
     </p>
   </article>
 </Layout>
@@ -62,6 +67,16 @@ import Layout from "../layouts/Layout.astro";
     font-weight: 600;
     font-size: var(--text-lg);
     margin: var(--space-lg) 0 var(--space-sm);
+  }
+
+  .page ul {
+    line-height: 1.6;
+    padding-left: 1.2em;
+    margin: 0 0 var(--space-md);
+  }
+
+  .page li {
+    margin-bottom: var(--space-xs);
   }
 
   .page p {

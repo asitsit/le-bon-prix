@@ -4,18 +4,23 @@ import { calculerStatutSaison } from "../lib/saison";
 interface Props {
   moisSaison: number[];
   productionEurope?: boolean;
+  taille?: "sm" | "md";
 }
 
-const { moisSaison, productionEurope = true } = Astro.props;
+const { moisSaison, productionEurope = true, taille = "sm" } = Astro.props;
 
-const { statut, label } = productionEurope
-  ? calculerStatutSaison(moisSaison)
-  : { statut: "importe" as const, label: "importé" };
+// Rendu initial à la date du build ; scripts/saison-client.ts le recalcule à la date du visiteur
+const { statut, label } = calculerStatutSaison(moisSaison, undefined, productionEurope);
 ---
 
-<span class={`badge badge--${statut}`}>
+<span
+  class={`badge badge--${statut} badge--${taille}`}
+  data-saison
+  data-mois={moisSaison.join(",")}
+  data-europe={productionEurope ? "1" : "0"}
+>
   <span class="badge__dot" aria-hidden="true"></span>
-  {label}
+  <span data-saison-label>{label}</span>
 </span>
 
 <style>
@@ -25,6 +30,15 @@ const { statut, label } = productionEurope
     gap: 5px;
     font-size: var(--text-xs);
     font-weight: 500;
+    border-radius: 999px;
+    padding: 2px 8px 2px 7px;
+    white-space: nowrap;
+    width: fit-content;
+  }
+
+  .badge--md {
+    font-size: var(--text-sm);
+    padding: 4px 12px 4px 10px;
   }
 
   .badge__dot {
@@ -32,28 +46,22 @@ const { statut, label } = productionEurope
     height: 7px;
     border-radius: 50%;
     display: inline-block;
+    background: currentColor;
   }
 
   .badge--de_saison {
-    color: var(--color-saison-ok);
-  }
-  .badge--de_saison .badge__dot {
-    background: var(--color-saison-ok);
+    color: var(--color-saison-ok-text);
+    background: var(--color-saison-ok-bg);
   }
 
   .badge--bientot {
     color: var(--color-saison-bientot);
-  }
-  .badge--bientot .badge__dot {
-    background: var(--color-saison-bientot);
+    background: var(--color-saison-bientot-bg);
   }
 
   .badge--hors_saison,
   .badge--importe {
-    color: var(--color-saison-non);
-  }
-  .badge--hors_saison .badge__dot,
-  .badge--importe .badge__dot {
-    background: var(--color-saison-non);
+    color: var(--color-saison-non-text);
+    background: var(--color-saison-non-bg);
   }
 </style>

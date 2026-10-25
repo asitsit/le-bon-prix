@@ -1,0 +1,127 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  lettres?: boolean;
+}
+
+const { lettres = true } = Astro.props;
+
+const PLAGES_LETTRES = ["A-C", "D-F", "G-I", "J-L", "M-O", "P-R", "S-U", "V-Z"];
+---
+
+<div class="filtres">
+  <label class="recherche">
+    <Icon name="search" size={20} />
+    <span class="sr-only">Rechercher un fruit ou un légume</span>
+    <input
+      type="search"
+      class="recherche__input"
+      placeholder="Tomate, pomme, poireau…"
+      autocomplete="off"
+      enterkeyhint="search"
+      data-filtre-recherche
+    />
+  </label>
+
+  <div class="filtres__ligne" role="group" aria-label="Type de produit">
+    <button type="button" class="chip" data-filtre-type="tous" aria-pressed="true">Tous</button>
+    <button type="button" class="chip" data-filtre-type="fruit" aria-pressed="false">
+      <Icon name="apple" size={16} /> Fruits
+    </button>
+    <button type="button" class="chip" data-filtre-type="legume" aria-pressed="false">
+      <Icon name="carrot" size={16} /> Légumes
+    </button>
+  </div>
+
+  {
+    lettres && (
+      <div class="filtres__ligne filtres__ligne--defile" role="group" aria-label="Filtrer par première lettre">
+        {PLAGES_LETTRES.map((p) => (
+          <button type="button" class="chip chip--lettres" data-filtre-lettres={p} aria-pressed="false">
+            {p.replace("-", "–")}
+          </button>
+        ))}
+      </div>
+    )
+  }
+
+  <p class="filtres__resultats" aria-live="polite"><span data-resultats-count></span></p>
+</div>
+
+<style>
+  .filtres {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .recherche {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    background: var(--color-papier);
+    border: 1.5px solid var(--color-ardoise);
+    border-radius: var(--radius-sm);
+    padding: 0 var(--space-sm);
+    height: 48px;
+    color: var(--color-encre-douce);
+  }
+
+  .recherche:focus-within {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .recherche__input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    color: var(--color-encre);
+    height: 100%;
+  }
+
+  .recherche__input:focus {
+    outline: none;
+  }
+
+  .recherche__input::placeholder {
+    color: var(--color-encre-pale);
+  }
+
+  .filtres__ligne {
+    display: flex;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+  }
+
+  .filtres__ligne--defile {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 0 calc(-1 * var(--space-md));
+    padding: 2px var(--space-md);
+  }
+
+  .filtres__ligne--defile::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filtres__resultats {
+    margin: 0;
+    font-size: var(--text-xs);
+    color: var(--color-encre-douce);
+    font-family: var(--font-mono);
+  }
+
+  @media (min-width: 640px) {
+    .filtres__ligne--defile {
+      flex-wrap: wrap;
+      margin: 0;
+      padding: 0;
+    }
+  }
+</style>

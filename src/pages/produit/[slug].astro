@@ -1,35 +1,530 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import ProductTicket from "../../components/ProductTicket.astro";
-import produits from "../../data/produits.json";
+import Icon, { type NomIcone } from "../../components/Icon.astro";
+import ProductImage from "../../components/ProductImage.astro";
+import SeasonBadge from "../../components/SeasonBadge.astro";
+import SeasonCalendar from "../../components/SeasonCalendar.astro";
+import PriceTicket from "../../components/PriceTicket.astro";
+import ProductCard from "../../components/ProductCard.astro";
+import { difficulteInfo } from "../../lib/difficulte";
+import { lieuConservationLabel } from "../../lib/conservation";
+import { estProduitEnEurope } from "../../lib/origine";
+import { periodesSaison } from "../../lib/mois";
+import { libelleCuisson, libelleRegion } from "../../lib/libelles";
+import produitsJson from "../../data/produits.json";
+import type { Produit } from "../../lib/types";
 
 export function getStaticPaths() {
-  return produits.map((p) => ({
+  return (produitsJson as Produit[]).map((p) => ({
     params: { slug: p.slug },
     props: { produit: p },
   }));
 }
 
+interface Props {
+  produit: Produit;
+}
+
 const { produit } = Astro.props;
+const tous = produitsJson as Produit[];
+
+const enEurope = estProduitEnEurope(produit.production_europe);
+const difficulte = difficulteInfo(produit.facilite_cuisson);
+
+const ICONE_CONSERVATION: Record<string, NomIcone> = {
+  frigo: "snowflake",
+  placard: "package",
+  cave: "warehouse",
+  air_libre: "sun",
+};
+
+// "Même saison" : produits européens dont les mois de saison recouvrent le plus ceux de ce produit
+const memeSaison = enEurope
+  ? tous
+      .filter((p) => p.slug !== produit.slug && estProduitEnEurope(p.production_europe))
+      .map((p) => {
+        const communs = p.mois_saison.filter((m) => produit.mois_saison.includes(m)).length;
+        const union = new Set([...p.mois_saison, ...produit.mois_saison]).size;
+        return { p, score: union ? communs / union : 0 };
+      })
+      .filter((x) => x.score > 0.4)
+      .sort((a, b) => b.score - a.score || a.p.nom.localeCompare(b.p.nom, "fr"))
+      .slice(0, 4)
+      .map((x) => x.p)
+  : [];
+
+const credit = produit.image_credit;
+const description = enEurope
+  ? `${produit.nom} : de saison ${periodesSaison(produit.mois_saison)}. Prix au supermarché, en bio et au marché, conservation et cuisson.`
+  : `${produit.nom} : produit importé. Prix au supermarché et en bio, conservation et cuisson.`;
 ---
 
-<Layout title={`${produit.nom} — De saison`}>
-  <a href="/produits" class="back">&larr; Retour à la recherche</a>
-  <div class="detail">
-    <ProductTicket produit={produit} />
+<Layout title={`${produit.nom} — saison, prix, conservation | De saison`} description={description}>
+  <a href="/" class="retour">
+    <Icon name="back" size={18} /> Tous les produits
+  </a>
+
+  <div class="fiche">
+    <!-- Colonne identité (collante en desktop) -->
+    <aside class="identite">
+      <div class="identite__scene">
+        <ProductImage src={produit.image} nom={produit.nom} taille={240} eager class="identite__img" />
+      </div>
+
+      <div class="identite__infos">
+        <span class="identite__type">
+          <Icon name={produit.type === "fruit" ? "apple" : "carrot"} size={14} />
+          {produit.type === "fruit" ? "Fruit" : "Légume"}
+        </span>
+        <h1 class="identite__nom">{produit.nom}</h1>
+        {produit.alias.length > 0 && <p class="identite__alias">Aussi : {produit.alias.join(", ")}</p>}
+        <div class="identite__statut">
+          <SeasonBadge moisSaison={produit.mois_saison} productionEurope={enEurope} taille="md" />
+          {
+            !enEurope && (
+              <span class="identite__importe">
+                <Icon name="globe" size={16} /> Pas produit en Europe
+              </span>
+            )
+          }
+        </div>
+
+        <button
+          type="button"
+          class="btn btn--accent identite__ajout"
+          data-liste-toggle={produit.slug}
+          data-nom={produit.nom}
+          aria-pressed="false"
+        >
+          <Icon name="basket" size={20} />
+          <span data-liste-label>Ajouter à ma liste</span>
+        </button>
+      </div>
+
+      {
+        credit && (
+          <p class="identite__credit">
+            Photo : <a href={credit.page} rel="noopener">{credit.artist || "Wikimedia Commons"}</a>, {credit.lic}
+          </p>
+        )
+      }
+    </aside>
+
+    <!-- Colonne détails -->
+    <div class="details">
+      <section class="bloc" aria-labelledby="titre-saison">
+        <h2 class="bloc__titre" id="titre-saison">
+          <Icon name="calendar" size={20} /> Calendrier de saison
+        </h2>
+        <SeasonCalendar moisSaison={produit.mois_saison} productionEurope={enEurope} />
+      </section>
+
+      <PriceTicket produit={produit} />
+
+      <section class="infos" aria-label="Conservation et cuisine">
+        <div class="info">
+          <span class="info__icone"><Icon name={ICONE_CONSERVATION[produit.conservation_lieu] ?? "package"} size={22} /></span>
+          <span class="info__label">Conservation</span>
+          <span class="info__valeur">{lieuConservationLabel(produit.conservation_lieu)}</span>
+          <span class="info__detail"><Icon name="clock" size={14} /> {produit.conservation_duree}</span>
+        </div>
+
+        <div class="info">
+          <span class="info__icone"><Icon name="gauge" size={22} /></span>
+          <span class="info__label">Difficulté</span>
+          <span class="info__valeur">{difficulte.label}</span>
+          <span class="info__niveau" aria-hidden="true">
+            {[1, 2, 3].map((n) => <span class:list={["niveau", { "is-plein": n <= difficulte.niveau }]} />)}
+          </span>
+        </div>
+
+        <div class="info info--large">
+          <span class="info__icone"><Icon name="chef" size={22} /></span>
+          <span class="info__label">Comment le cuisiner</span>
+          <ul class="puces">
+            {produit.cuisson_recommandee.map((c) => <li class="puce">{libelleCuisson(c)}</li>)}
+          </ul>
+        </div>
+
+        <div class="info info--large">
+          <span class="info__icone"><Icon name={enEurope ? "pin" : "globe"} size={22} /></span>
+          <span class="info__label">{enEurope ? "Principales régions de production" : "Principalement importé de"}</span>
+          <ul class="puces">
+            {produit.regions.map((r) => <li class="puce puce--contour">{libelleRegion(r)}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      {
+        produit.tip && (
+          <aside class="astuce">
+            <span class="astuce__icone"><Icon name="bulb" size={22} /></span>
+            <div>
+              <p class="astuce__titre">Le conseil du maraîcher</p>
+              <p class="astuce__texte">{produit.tip}</p>
+            </div>
+          </aside>
+        )
+      }
+    </div>
   </div>
+
+  {
+    memeSaison.length > 0 && (
+      <section class="associes" aria-labelledby="titre-associes">
+        <h2 class="associes__titre" id="titre-associes">
+          <Icon name="leaf" size={20} /> De la même saison
+        </h2>
+        <div class="associes__grille">
+          {memeSaison.map((p) => (
+            <ProductCard produit={p} />
+          ))}
+        </div>
+      </section>
+    )
+  }
 </Layout>
 
 <style>
-  .back {
-    display: inline-block;
-    margin-bottom: var(--space-lg);
-    color: var(--color-encre);
+  .retour {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: var(--tap-target);
+    margin: calc(-1 * var(--space-sm)) 0 var(--space-xs);
+    color: var(--color-encre-douce);
     text-decoration: none;
     font-size: var(--text-sm);
+    font-weight: 500;
   }
 
-  .detail {
-    padding-bottom: var(--space-lg);
+  .retour:hover {
+    color: var(--color-encre);
+  }
+
+  .fiche {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  /* --- Identité --- */
+  .identite {
+    background: var(--color-papier);
+    border: var(--border-dashed);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .identite__scene {
+    display: grid;
+    place-items: center;
+    padding: var(--space-lg) var(--space-md) var(--space-md);
+    background:
+      radial-gradient(ellipse 60% 14% at 50% 88%, rgba(31, 43, 34, 0.12), transparent 70%),
+      radial-gradient(circle at 50% 50%, var(--color-kraft) 0 42%, transparent 42.5%),
+      repeating-linear-gradient(45deg, transparent 0 10px, rgba(226, 214, 188, 0.35) 10px 11px);
+  }
+
+  .identite__scene :global(.identite__img) {
+    width: min(62vw, 240px);
+    height: auto;
+    aspect-ratio: 1;
+    animation: apparition 300ms ease-out both;
+  }
+
+  @keyframes apparition {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.97);
+    }
+  }
+
+  .identite__infos {
+    padding: 0 var(--space-md) var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-xs);
+  }
+
+  .identite__type {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-encre-douce);
+  }
+
+  .identite__nom {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 2.25rem;
+    line-height: 1.05;
+    margin: 0;
+  }
+
+  .identite__alias {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-encre-douce);
+  }
+
+  .identite__statut {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-xs);
+    margin-top: 2px;
+  }
+
+  .identite__importe {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-encre-douce);
+  }
+
+  .identite__ajout {
+    width: 100%;
+    margin-top: var(--space-sm);
+  }
+
+  .identite__ajout[aria-pressed="true"] {
+    background: var(--color-saison-ok);
+    border-color: var(--color-saison-ok);
+  }
+
+  .identite__credit {
+    margin: 0;
+    padding: var(--space-xs) var(--space-md);
+    border-top: var(--border-dashed);
+    font-size: 10px;
+    color: var(--color-encre-pale);
+    text-align: center;
+  }
+
+  .identite__credit a {
+    color: inherit;
+  }
+
+  /* --- Détails --- */
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    min-width: 0;
+  }
+
+  .bloc {
+    background: var(--color-papier);
+    border: var(--border-dashed);
+    border-radius: var(--radius-md);
+    padding: var(--space-md) var(--space-md) var(--space-sm);
+  }
+
+  .bloc__titre {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    margin: 0 0 var(--space-md);
+  }
+
+  .infos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-sm);
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    background: var(--color-papier);
+    border: var(--border-dashed);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    min-width: 0;
+  }
+
+  .info--large {
+    grid-column: 1 / -1;
+  }
+
+  .info__icone {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: var(--color-ardoise);
+    color: var(--color-papier);
+    margin-bottom: 4px;
+  }
+
+  .info__label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-encre-douce);
+  }
+
+  .info__valeur {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    line-height: 1.2;
+  }
+
+  .info__detail {
+    display: inline-flex;
+    align-items: flex-start;
+    line-height: 1.35;
+    gap: 4px;
+    font-size: var(--text-sm);
+    color: var(--color-encre-douce);
+  }
+
+  .info__niveau {
+    display: flex;
+    gap: 4px;
+    margin-top: 2px;
+  }
+
+  .niveau {
+    width: 22px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--color-kraft-fonce);
+  }
+
+  .niveau.is-plein {
+    background: var(--color-ardoise);
+  }
+
+  .puces {
+    list-style: none;
+    margin: 4px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .puce {
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--color-kraft);
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  .puce::first-letter {
+    text-transform: uppercase;
+  }
+
+  .puce--contour {
+    background: transparent;
+    border: 1px solid var(--color-kraft-fonce);
+  }
+
+  .astuce {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: flex-start;
+    background: var(--color-ardoise);
+    color: var(--color-papier);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+  }
+
+  .astuce__icone {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #f2c14e;
+    color: var(--color-ardoise);
+  }
+
+  .astuce__titre {
+    margin: 0 0 2px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #c9c4b0;
+  }
+
+  .astuce__texte {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-base);
+    line-height: 1.45;
+  }
+
+  .associes {
+    margin-top: var(--space-xl);
+  }
+
+  .associes__titre {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    margin: 0 0 var(--space-md);
+  }
+
+  .associes__grille {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+
+  @media (min-width: 640px) {
+    .associes__grille {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .fiche {
+      grid-template-columns: minmax(300px, 380px) 1fr;
+      align-items: start;
+      gap: var(--space-xl);
+    }
+
+    .identite {
+      position: sticky;
+      top: 96px;
+    }
+
+    .identite__scene :global(.identite__img) {
+      width: 260px;
+    }
+
+    .identite__nom {
+      font-size: 2.75rem;
+    }
+
+    .associes__grille {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 </style>

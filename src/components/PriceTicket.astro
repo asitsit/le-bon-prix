@@ -1,0 +1,363 @@
+---
+import Icon, { type NomIcone } from "./Icon.astro";
+import { SERIES, formatDate, formatEuros, tendance } from "../lib/prix";
+import type { Produit, SeriePrix } from "../lib/types";
+
+interface Props {
+  produit: Produit;
+}
+
+const { produit } = Astro.props;
+
+const LIGNES: Array<{ serie: SeriePrix; icone: NomIcone }> = [
+  { serie: "supermarche", icone: "store" },
+  { serie: "marche", icone: "bag" },
+  { serie: "bio", icone: "sprout" },
+];
+
+const lignes = LIGNES.map((l) => ({ ...l, prix: produit.prix[l.serie] })).filter((l) => l.prix);
+const aDesPrixReels = lignes.some((l) => l.prix!.type === "rnm");
+const dateReelle = lignes
+  .filter((l) => l.prix!.type === "rnm")
+  .map((l) => l.prix!.date)
+  .sort()
+  .at(-1);
+
+const TENDANCES = {
+  up: { icone: "up", label: "en hausse sur la semaine" },
+  down: { icone: "down", label: "en baisse sur la semaine" },
+  flat: { icone: "flat", label: "stable sur la semaine" },
+} as const;
+
+// Mini-courbe d'historique (SVG statique généré au build)
+const points = produit.historique;
+let courbe: { d: string; min: number; max: number; debut: string; fin: string } | null = null;
+if (points.length >= 2) {
+  const valeurs = points.map((p) => p.prix);
+  const min = Math.min(...valeurs);
+  const max = Math.max(...valeurs);
+  const etendue = max - min || 1;
+  const d = points
+    .map((p, i) => `${i === 0 ? "M" : "L"}${((i / (points.length - 1)) * 100).toFixed(1)},${(28 - ((p.prix - min) / etendue) * 24).toFixed(1)}`)
+    .join(" ");
+  courbe = { d, min, max, debut: points[0].date, fin: points.at(-1)!.date };
+}
+---
+
+<section class="ticket" aria-labelledby="titre-prix">
+  <header class="ticket__entete">
+    <h2 id="titre-prix" class="ticket__titre">Combien ça coûte ?</h2>
+    {
+      aDesPrixReels ? (
+        <span class="ticket__live">
+          <span class="ticket__live-dot" aria-hidden="true" /> Prix réels · {formatDate(dateReelle!)}
+        </span>
+      ) : (
+        <span class="ticket__estim">Estimations</span>
+      )
+    }
+  </header>
+
+  <ul class="ticket__lignes">
+    {
+      lignes.map(({ serie, icone, prix }) => {
+        const t = tendance(prix!);
+        return (
+          <li class="ligne">
+            <span class="ligne__icone">
+              <Icon name={icone} size={20} />
+            </span>
+            <span class="ligne__texte">
+              <span class="ligne__label">{SERIES[serie].label}</span>
+              <span class="ligne__detail">
+                {prix!.type === "rnm" ? (
+                  <>
+                    <span class="tag tag--rnm">RNM</span> {SERIES[serie].detail}
+                  </>
+                ) : (
+                  <>
+                    <span class="tag">estimation</span> {SERIES[serie].detail}
+                  </>
+                )}
+              </span>
+            </span>
+            <span class="ligne__prix">
+              <span class="ligne__valeur">{formatEuros(prix!.valeur)}</span>
+              <span class="ligne__unite">
+                /{prix!.unite}
+                {t && (
+                  <span class={`tendance tendance--${t}`} title={TENDANCES[t].label}>
+                    <Icon name={TENDANCES[t].icone} size={14} label={TENDANCES[t].label} />
+                  </span>
+                )}
+              </span>
+            </span>
+          </li>
+        );
+      })
+    }
+  </ul>
+
+  {
+    courbe && (
+      <figure class="courbe">
+        <figcaption class="courbe__titre">
+          Évolution — {SERIES[produit.historique_serie].label.toLowerCase()}
+        </figcaption>
+        <svg viewBox="0 0 100 30" preserveAspectRatio="none" class="courbe__svg" aria-hidden="true">
+          <path d={courbe.d} fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke" />
+        </svg>
+        <div class="courbe__axes">
+          <span>{formatDate(courbe.debut)}</span>
+          <span>
+            {formatEuros(courbe.min)} – {formatEuros(courbe.max)}
+          </span>
+          <span>{formatDate(courbe.fin)}</span>
+        </div>
+      </figure>
+    )
+  }
+
+  <footer class="ticket__pied">
+    {
+      aDesPrixReels && (
+        <p>
+          Prix réels : médiane des cotations du <a href="https://rnm.franceagrimer.fr" rel="noopener">Réseau des Nouvelles des Marchés</a> (FranceAgriMer,
+          licence ouverte), relevés chaque semaine.
+        </p>
+      )
+    }
+    <p>Les estimations sont des ordres de grandeur, mis à jour le {formatDate(produit.prix.marche?.date ?? "")}.</p>
+    <a class="ticket__signaler" href={`/suggestions?produit=${encodeURIComponent(produit.nom)}&sujet=erreur-prix`}>
+      <Icon name="message" size={14} /> Signaler un prix
+    </a>
+  </footer>
+</section>
+
+<style>
+  .ticket {
+    position: relative;
+    background: var(--color-papier);
+    border: var(--border-dashed);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+  }
+
+  /* Encoches de ticket détachable */
+  .ticket::before,
+  .ticket::after {
+    content: "";
+    position: absolute;
+    top: 52px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-kraft);
+    border: var(--border-dashed);
+  }
+
+  .ticket::before {
+    left: -9px;
+    clip-path: inset(0 0 0 50%);
+  }
+
+  .ticket::after {
+    right: -9px;
+    clip-path: inset(0 50% 0 0);
+  }
+
+  .ticket__entete {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+    padding-bottom: var(--space-sm);
+    margin-bottom: var(--space-xs);
+    border-bottom: var(--border-dashed);
+  }
+
+  .ticket__titre {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    margin: 0;
+  }
+
+  .ticket__live,
+  .ticket__estim {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-saison-ok-text);
+  }
+
+  .ticket__estim {
+    color: var(--color-encre-pale);
+  }
+
+  .ticket__live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-saison-ok);
+    box-shadow: 0 0 0 3px var(--color-saison-ok-bg);
+  }
+
+  .ticket__lignes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ligne {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) 0;
+  }
+
+  .ligne + .ligne {
+    border-top: 1px dotted var(--color-kraft-fonce);
+  }
+
+  .ligne__icone {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-kraft);
+  }
+
+  .ligne__texte {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .ligne__label {
+    font-weight: 600;
+    font-size: var(--text-sm);
+  }
+
+  .ligne__detail {
+    font-size: var(--text-xs);
+    color: var(--color-encre-douce);
+    line-height: 1.35;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0 5px;
+    border-radius: 4px;
+    background: var(--color-saison-non-bg);
+    color: var(--color-saison-non-text);
+  }
+
+  .tag--rnm {
+    background: var(--color-saison-ok-bg);
+    color: var(--color-saison-ok-text);
+  }
+
+  .ligne__prix {
+    flex-shrink: 0;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .ligne__valeur {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-lg);
+    line-height: 1.1;
+  }
+
+  .ligne__unite {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-encre-douce);
+  }
+
+  .tendance {
+    display: inline-flex;
+  }
+
+  .tendance--up {
+    color: var(--color-accent-fonce);
+  }
+
+  .tendance--down {
+    color: var(--color-saison-ok-text);
+  }
+
+  .tendance--flat {
+    color: var(--color-encre-pale);
+  }
+
+  .courbe {
+    margin: var(--space-sm) 0 0;
+    padding-top: var(--space-sm);
+    border-top: var(--border-dashed);
+    color: var(--color-saison-ok-text);
+  }
+
+  .courbe__titre {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-encre-douce);
+    margin-bottom: 6px;
+  }
+
+  .courbe__svg {
+    display: block;
+    width: 100%;
+    height: 48px;
+  }
+
+  .courbe__axes {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-encre-pale);
+    margin-top: 4px;
+  }
+
+  .ticket__pied {
+    margin-top: var(--space-sm);
+    padding-top: var(--space-sm);
+    border-top: var(--border-dashed);
+    font-size: var(--text-xs);
+    color: var(--color-encre-douce);
+  }
+
+  .ticket__pied p {
+    margin: 0 0 6px;
+  }
+
+  .ticket__signaler {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: var(--tap-target);
+    font-weight: 500;
+    color: var(--color-encre);
+  }
+</style>

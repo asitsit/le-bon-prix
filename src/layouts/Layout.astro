@@ -1,5 +1,6 @@
 ---
 import "../styles/tokens.css";
+import Icon, { type NomIcone } from "../components/Icon.astro";
 
 interface Props {
   title: string;
@@ -7,121 +8,298 @@ interface Props {
 }
 
 const { title, description = "Fruits et légumes de saison : conservation, cuisson et prix, en un coup d'œil." } = Astro.props;
+
+const ONGLETS: Array<{ href: string; label: string; court: string; icone: NomIcone; compteur?: boolean }> = [
+  { href: "/", label: "Tous les produits", court: "Tous", icone: "grid" },
+  { href: "/de-saison", label: "De saison", court: "De saison", icone: "leaf" },
+  { href: "/liste", label: "Ma liste", court: "Ma liste", icone: "basket", compteur: true },
+  { href: "/suggestions", label: "Suggestions", court: "Suggérer", icone: "message" },
+];
+
+const chemin = Astro.url.pathname.replace(/\/$/, "") || "/";
+const actif = (href: string) => (href === "/" ? chemin === "/" || chemin.startsWith("/produit/") : chemin.startsWith(href));
 ---
 
 <!doctype html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#1f2b22" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="description" content={description} />
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Public+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
-    <header class="site-header">
-      <nav class="site-header__inner">
-        <a href="/" class="site-header__logo">
-          <img src="/logo.svg" alt="De saison" height="32" />
+    <a class="evitement" href="#contenu">Aller au contenu</a>
+    <header class="entete">
+      <div class="entete__inner">
+        <a href="/" class="entete__logo" aria-label="De saison — accueil">
+          <img src="/logo.svg" alt="De saison" height="36" width="149" />
         </a>
-        <div class="site-header__links">
-          <a href="/produits">Voir les prix</a>
-          <a href="/qui-sommes-nous">Qui sommes-nous</a>
-        </div>
-      </nav>
+        <nav class="onglets-desktop" aria-label="Navigation principale">
+          {
+            ONGLETS.map((o) => (
+              <a href={o.href} class="onglet" aria-current={actif(o.href) ? "page" : undefined}>
+                <Icon name={o.icone} size={18} />
+                {o.label}
+                {o.compteur && <span class="compteur" data-liste-count hidden />}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
     </header>
-    <main>
+
+    <main id="contenu">
       <slot />
     </main>
-    <footer class="site-footer">
+
+    <footer class="pied">
       <p>De saison — les fruits et légumes de saison, au juste prix.</p>
-      <div class="site-footer__links">
+      <p class="pied__source">
+        Prix : <a href="https://rnm.franceagrimer.fr" rel="noopener">RNM — FranceAgriMer</a> (licence ouverte) et estimations.
+        Saisonnalité indicative, France métropolitaine.
+      </p>
+      <div class="pied__liens">
         <a href="/qui-sommes-nous">Qui sommes-nous</a>
+        <a href="/credits">Crédits photos</a>
         <a href="/mentions-legales">Mentions légales</a>
       </div>
     </footer>
+
+    <nav class="onglets-mobile" aria-label="Navigation principale">
+      {
+        ONGLETS.map((o) => (
+          <a href={o.href} class="onglet-mobile" aria-current={actif(o.href) ? "page" : undefined}>
+            <span class="onglet-mobile__icone">
+              <Icon name={o.icone} size={22} />
+              {o.compteur && <span class="compteur compteur--pastille" data-liste-count hidden />}
+            </span>
+            <span class="onglet-mobile__label">{o.court}</span>
+          </a>
+        ))
+      }
+    </nav>
+
+    <script>
+      import "../scripts/saison-client";
+      import "../scripts/liste-client";
+    </script>
   </body>
 </html>
 
 <style is:global>
-  .site-header {
-    background: var(--color-ardoise);
-    padding: var(--space-md);
+  .evitement {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    background: var(--color-papier);
+    padding: var(--space-xs) var(--space-md);
   }
 
-  .site-header__inner {
-    max-width: 960px;
+  .evitement:focus {
+    left: var(--space-md);
+  }
+
+  .entete {
+    background: var(--color-papier);
+    border-bottom: var(--border-dashed);
+    padding: var(--space-sm) var(--space-md);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  .entete__inner {
+    max-width: 1080px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
-  }
-
-  .site-header__logo {
-    display: inline-flex;
-    align-items: center;
-  }
-
-  .site-header__logo img {
-    display: block;
-  }
-
-  .site-header__links {
-    display: flex;
     gap: var(--space-md);
   }
 
-  .site-header__links a {
-    color: var(--color-papier);
-    text-decoration: none;
-    font-size: var(--text-sm);
-    font-weight: 500;
+  .entete__logo {
+    display: inline-flex;
+    min-height: var(--tap-target);
+    align-items: center;
   }
 
-  .site-header__links a:hover,
-  .site-header__links a:focus-visible {
-    text-decoration: underline;
+  .entete__logo img {
+    display: block;
+    height: 32px;
+    width: auto;
+  }
+
+  .onglets-desktop {
+    display: none;
+  }
+
+  .onglet {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: var(--tap-target);
+    padding: 0 var(--space-sm);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: var(--text-sm);
+    color: var(--color-encre-douce);
+    transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+  }
+
+  .onglet:hover {
+    background: var(--color-kraft);
+    color: var(--color-encre);
+  }
+
+  .onglet[aria-current="page"] {
+    background: var(--color-ardoise);
+    color: var(--color-papier);
+  }
+
+  .compteur {
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--color-accent);
+    color: var(--color-papier);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    display: inline-grid;
+    place-items: center;
+    line-height: 1;
   }
 
   main {
-    max-width: 960px;
+    max-width: 1080px;
     margin: 0 auto;
     padding: var(--space-lg) var(--space-md) var(--space-xl);
   }
 
-  .site-footer {
+  .pied {
     border-top: var(--border-dashed);
-    padding: var(--space-lg) var(--space-md);
-    max-width: 960px;
+    padding: var(--space-lg) var(--space-md) calc(var(--nav-mobile) + var(--space-lg) + env(safe-area-inset-bottom));
+    max-width: 1080px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-sm);
+    gap: var(--space-xs);
     text-align: center;
-    color: #4a4536;
+    color: var(--color-encre-douce);
     font-size: var(--text-sm);
   }
 
-  .site-footer p {
+  .pied p {
     margin: 0;
   }
 
-  .site-footer__links {
-    display: flex;
-    gap: var(--space-md);
+  .pied__source {
+    font-size: var(--text-xs);
+    max-width: 520px;
   }
 
-  .site-footer__links a {
+  .pied__liens {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-xs) var(--space-md);
+    margin-top: var(--space-xs);
+  }
+
+  .pied__liens a {
     color: var(--color-encre);
     font-weight: 500;
+    min-height: var(--tap-target);
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Barre d'onglets mobile, accessible au pouce */
+  .onglets-mobile {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    height: calc(var(--nav-mobile) + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    background: var(--color-ardoise);
+  }
+
+  .onglet-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    text-decoration: none;
+    color: #b9b5a4;
+    font-size: 11px;
+    font-weight: 500;
+    position: relative;
+  }
+
+  .onglet-mobile[aria-current="page"] {
+    color: var(--color-papier);
+  }
+
+  .onglet-mobile[aria-current="page"]::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 30%;
+    right: 30%;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--color-saison-ok);
+  }
+
+  .onglet-mobile__icone {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .compteur--pastille {
+    position: absolute;
+    top: -6px;
+    right: -12px;
+    min-width: 18px;
+    height: 18px;
+    font-size: 10px;
+    padding: 0 5px;
+  }
+
+  @media (min-width: 840px) {
+    .onglets-desktop {
+      display: flex;
+      gap: 4px;
+    }
+
+    .onglets-mobile {
+      display: none;
+    }
+
+    .pied {
+      padding-bottom: var(--space-lg);
+    }
+
+    main {
+      padding-top: var(--space-xl);
+    }
   }
 </style>

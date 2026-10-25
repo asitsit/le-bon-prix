@@ -1,0 +1,51 @@
+---
+interface Props {
+  src: string | null;
+  nom: string;
+  taille: number;
+  eager?: boolean;
+  class?: string;
+}
+
+const { src, nom, taille, eager = false, class: className } = Astro.props;
+---
+
+{
+  src ? (
+    <img
+      src={src}
+      alt={nom}
+      width={taille}
+      height={taille}
+      loading={eager ? "eager" : "lazy"}
+      decoding="async"
+      class:list={["produit-img", className]}
+    />
+  ) : (
+    <span class:list={["produit-img produit-img--vide", className]} style={`--taille:${taille}px`} aria-hidden="true">
+      {nom.charAt(0)}
+    </span>
+  )
+}
+
+<style>
+  .produit-img {
+    display: block;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 6px rgba(31, 43, 34, 0.18));
+  }
+
+  .produit-img--vide {
+    width: var(--taille);
+    height: var(--taille);
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-kraft-fonce);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: calc(var(--taille) * 0.45);
+    color: var(--color-encre-douce);
+    filter: none;
+  }
+</style>

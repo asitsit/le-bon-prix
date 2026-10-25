@@ -1,0 +1,190 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CatalogueFilters from "../components/CatalogueFilters.astro";
+import ProductCard from "../components/ProductCard.astro";
+import Icon from "../components/Icon.astro";
+import { MOIS_NOMS } from "../lib/mois";
+import { moisCourant } from "../lib/saison";
+import { estProduitEnEurope } from "../lib/origine";
+import produitsJson from "../data/produits.json";
+import type { Produit } from "../lib/types";
+
+// Les produits importés n'ont pas de saison française : ils n'apparaissent pas ici
+const produits = (produitsJson as Produit[]).filter((p) => estProduitEnEurope(p.production_europe));
+const mois = moisCourant();
+const MOIS_COURTS = ["janv", "févr", "mars", "avr", "mai", "juin", "juil", "août", "sept", "oct", "nov", "déc"];
+---
+
+<Layout title="De saison ce mois-ci — De saison" description="Les fruits et légumes de saison ce mois-ci en France, et ceux qui arrivent bientôt.">
+  <section class="intro">
+    <p class="surtitre"><Icon name="leaf" size={16} /> Saison France métropolitaine</p>
+    <h1 class="titre-page">De saison en <span data-mois-courant>{MOIS_NOMS[mois - 1]}</span></h1>
+  </section>
+
+  <div class="mois" role="group" aria-label="Choisir un mois">
+    {
+      MOIS_NOMS.map((nom, i) => (
+        <button type="button" class="mois__btn" data-filtre-mois={i + 1} aria-pressed={String(i + 1 === mois)}>
+          <span class="mois__court" aria-hidden="true">{MOIS_COURTS[i]}</span>
+          <span class="sr-only">{nom}</span>
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="barre-filtres">
+    <CatalogueFilters lettres={false} />
+  </div>
+
+  <div data-catalogue>
+    <section class="section" data-groupe data-statut-filtre="de_saison">
+      <div class="grille">
+        {produits.map((p) => <ProductCard produit={p} />)}
+      </div>
+    </section>
+
+    <section class="section" data-groupe data-statut-filtre="bientot">
+      <h2 class="section__titre">
+        <Icon name="clock" size={20} /> Bientôt de saison
+      </h2>
+      <p class="section__aide">Leur saison commence le mois suivant.</p>
+      <div class="grille">
+        {produits.map((p) => <ProductCard produit={p} />)}
+      </div>
+    </section>
+
+    <div class="vide" data-vide hidden>
+      <p><strong>Aucun produit de saison ne correspond.</strong></p>
+      <button type="button" class="btn" data-reinitialiser>Effacer la recherche</button>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import "../scripts/catalogue";
+</script>
+
+<style>
+  .intro {
+    margin-bottom: var(--space-md);
+  }
+
+  .surtitre {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 var(--space-xs);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-saison-ok-text);
+  }
+
+  .titre-page [data-mois-courant] {
+    color: var(--color-saison-ok-text);
+  }
+
+  .mois {
+    position: relative; /* contient les libellés .sr-only, sinon ils débordent de la page */
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 0 calc(-1 * var(--space-md)) var(--space-md);
+    padding: 2px var(--space-md);
+  }
+
+  .mois::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mois__btn {
+    flex: 0 0 auto;
+    min-width: 52px;
+    min-height: var(--tap-target);
+    border: var(--border-dashed);
+    border-radius: var(--radius-sm);
+    background: var(--color-papier);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    text-transform: capitalize;
+    color: var(--color-encre);
+    cursor: pointer;
+  }
+
+  .mois__btn[aria-pressed="true"] {
+    background: var(--color-saison-ok);
+    border: 1px solid var(--color-saison-ok);
+    color: var(--color-papier);
+    font-weight: 500;
+  }
+
+  .barre-filtres {
+    margin-bottom: var(--space-lg);
+  }
+
+  .section {
+    margin-bottom: var(--space-xl);
+  }
+
+  .section__titre {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    margin: 0;
+    color: var(--color-saison-bientot);
+  }
+
+  .section__aide {
+    margin: 2px 0 var(--space-md);
+    font-size: var(--text-sm);
+    color: var(--color-encre-douce);
+  }
+
+  .grille {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+
+  /* Chaque section ne montre que les cartes du statut voulu, même avant l'exécution du JS */
+  [data-statut-filtre="de_saison"] :global([data-card]:not([data-statut="de_saison"])),
+  [data-statut-filtre="bientot"] :global([data-card]:not([data-statut="bientot"])) {
+    display: none;
+  }
+
+  .vide {
+    text-align: center;
+    padding: var(--space-xl) var(--space-md);
+    border: var(--border-dashed);
+    border-radius: var(--radius-md);
+    background: var(--color-papier);
+  }
+
+  @media (min-width: 640px) {
+    .grille {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .mois {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      margin: 0 0 var(--space-md);
+      padding: 0;
+    }
+
+    .mois__btn {
+      min-width: 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grille {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

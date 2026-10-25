@@ -1,0 +1,89 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ProductImage from "../components/ProductImage.astro";
+import produitsJson from "../data/produits.json";
+import type { Produit } from "../lib/types";
+
+const produits = (produitsJson as Produit[]).filter((p) => p.image_credit);
+---
+
+<Layout title="Crédits photos — De saison" description="Auteurs et licences des photos de fruits et légumes utilisées sur le site.">
+  <article class="page">
+    <h1 class="titre-page">Crédits photos</h1>
+    <p>
+      Les photos proviennent de <a href="https://commons.wikimedia.org" rel="noopener">Wikimedia Commons</a>, sous licences
+      libres. Elles ont été détourées (fond rendu transparent) et recadrées pour le site : ce sont des œuvres dérivées,
+      diffusées sous la même licence que l'original.
+    </p>
+    <p>
+      Les prix proviennent du <a href="https://rnm.franceagrimer.fr" rel="noopener">Réseau des Nouvelles des Marchés</a>
+      (FranceAgriMer), réutilisés sous <a href="https://www.franceagrimer.fr/La-licence-ouverte" rel="noopener">licence ouverte</a>.
+      Les icônes sont issues de <a href="https://lucide.dev" rel="noopener">Lucide</a> (licence ISC).
+    </p>
+
+    <ul class="credits">
+      {
+        produits.map((p) => (
+          <li class="credit">
+            <ProductImage src={p.image} nom={p.nom} taille={48} />
+            <span class="credit__texte">
+              <strong>{p.nom}</strong>
+              <span>
+                <a href={p.image_credit!.page} rel="noopener">{p.image_credit!.artist || "Auteur sur Wikimedia Commons"}</a>
+                {" — "}
+                {p.image_credit!.licurl ? (
+                  <a href={p.image_credit!.licurl} rel="noopener license">{p.image_credit!.lic}</a>
+                ) : (
+                  p.image_credit!.lic
+                )}
+              </span>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </article>
+</Layout>
+
+<style>
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .page > p {
+    line-height: 1.6;
+    margin: var(--space-md) 0;
+  }
+
+  .credits {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-lg) 0 0;
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .credit {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--color-papier);
+    border: var(--border-dashed);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+  }
+
+  .credit__texte {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .credit__texte span {
+    color: var(--color-encre-douce);
+    font-size: var(--text-xs);
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+import { MOIS_NOMS, periodesSaison } from "../lib/mois";
+import { moisCourant } from "../lib/saison";
+
+interface Props {
+  moisSaison: number[];
+  productionEurope: boolean;
+}
+
+const { moisSaison, productionEurope } = Astro.props;
+const courant = moisCourant();
+---
+
+<div class="calendrier">
+  <ol class="calendrier__mois" aria-label="Mois de saison">
+    {
+      MOIS_NOMS.map((nom, i) => {
+        const mois = i + 1;
+        const enSaison = productionEurope && moisSaison.includes(mois);
+        return (
+          <li
+            class:list={["calendrier__cell", { "is-saison": enSaison, "is-current": mois === courant }]}
+            data-calendrier-mois={mois}
+            title={`${nom} : ${enSaison ? "de saison" : "hors saison"}`}
+          >
+            <span aria-hidden="true">{nom.charAt(0).toUpperCase()}</span>
+            <span class="sr-only">{`${nom}${enSaison ? ", de saison" : ""}`}</span>
+          </li>
+        );
+      })
+    }
+  </ol>
+  <p class="calendrier__texte">
+    {productionEurope ? <>De saison <strong>{periodesSaison(moisSaison)}</strong>.</> : "Pas de production en France : importé toute l'année."}
+  </p>
+</div>
+
+<style>
+  .calendrier__mois {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 3px;
+  }
+
+  .calendrier__cell {
+    position: relative;
+    aspect-ratio: 1 / 1.25;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    background: var(--color-saison-non-bg);
+    color: var(--color-saison-non-text);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+  }
+
+  .calendrier__cell.is-saison {
+    background: var(--color-saison-ok);
+    color: var(--color-papier);
+  }
+
+  .calendrier__cell.is-current {
+    outline: 2px solid var(--color-ardoise);
+    outline-offset: 1px;
+  }
+
+  .calendrier__cell.is-current::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 5px solid var(--color-ardoise);
+  }
+
+  .calendrier__texte {
+    margin: var(--space-sm) 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-encre-douce);
+  }
+</style>

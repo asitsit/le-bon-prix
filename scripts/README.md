@@ -2,39 +2,75 @@
 
 ## build-data.mjs
 
-Transforme `data/produits.csv` en `src/data/produits.json`. Lancé automatiquement avant `dev` et `build` (voir `package.json`).
+Construit `src/data/produits.json` (lancé automatiquement avant `dev` et `build`) en fusionnant :
 
-## fetch-prices.mjs — mise à jour hebdomadaire des prix
+- `data/produits.csv` — fiche produit éditable (saison, conservation, cuisson, prix estimés) ;
+- `data/prix-rnm.json` — derniers prix réels RNM (généré par `fetch-prices.mjs`) ;
+- `data/prix-historique.json` — historique des relevés (mini-courbe sur la fiche) ;
+- `data/credits-images.json` + `public/produits/<slug>.webp` — photo détourée et ses crédits.
 
-**État actuel : la mise à jour automatique est câblée, mais la source de données RNM ne l'est pas encore.**
+Pour chaque série de prix, un prix RNM réel remplace l'estimation du CSV quand il existe. Le prix
+« marché de plein air » reste une estimation : le RNM ne suit pas ce circuit.
 
-Le cadrage initial prévoyait de brancher ce script directement sur un export FranceAgriMer/RNM
-téléchargeable depuis data.gouv.fr. En pratique (vérifié en août 2026), le dataset publié sur
-data.gouv.fr (`cotations-du-reseau-des-nouvelles-des-marches`) n'est mis à jour qu'une fois par an
-et pointe vers le portail interne `visionet.franceagrimer.fr`, qui n'est pas un fichier
-téléchargeable automatiquement : c'est un tableau de bord interactif, sans export CSV/API public.
-FranceAgriMer indique qu'un accès personnalisé (API, export Excel) s'obtient sur demande auprès de
-`contact-rnm@franceagrimer.fr`.
+## fetch-prices.mjs — prix réels FranceAgriMer / RNM
 
-En attendant cet accès, `fetch-prices.mjs` fonctionne avec un **fichier d'entrée manuel** :
+**État (octobre 2026) : branché et fonctionnel**, sans clé ni accès particulier.
 
-1. Chaque semaine (ou quand une nouvelle cotation est disponible), déposez un export dans
-   `data/rnm-export.csv` avec les colonnes : `produit,prix,unite,date`
-   (ex. `TOMATE,2.80,kg,2026-08-04`).
-2. Le workflow GitHub Actions (`.github/workflows/update-prices.yml`) exécute ce script chaque
-   lundi matin. Le script :
-   - lit `data/rnm-export.csv` s'il existe,
-   - fait correspondre chaque libellé à un `slug` via `scripts/mapping-rnm.json`,
-   - met à jour `prix_marche`, `prix_maj` et `prix_source` dans `data/produits.csv`,
-   - régénère `src/data/produits.json`.
-3. S'il n'y a rien à mettre à jour (fichier absent ou vide), le script ne fait rien et se termine
-   sans erreur — le workflow ne casse jamais faute de données.
-4. Le commit + push automatique déclenche le redéploiement Vercel.
+Le site public du Réseau des Nouvelles des Marchés (`rnm.franceagrimer.fr`) publie des pages
+« prix par marché » en HTML, réutilisables sous licence ouverte FranceAgriMer (citation de la
+source obligatoire, faite sur chaque fiche et en pied de page). Le script lit 4 pages :
 
-`scripts/mapping-rnm.json` associe chaque `slug` à un ou plusieurs libellés RNM possibles (en
-MAJUSCULES, tels qu'ils apparaîtraient dans un export). Ces libellés sont des estimations à vérifier
-et ajuster une fois un vrai export RNM obtenu — ce ne sont pas des valeurs confirmées auprès de
-FranceAgriMer.
+| Code RNM | Contenu | Série sur le site | Fréquence |
+|---|---|---|---|
+| `M2502` | Légumes France DÉTAIL GMS (TTC) | Supermarché | hebdomadaire |
+| `M2503` | Fruits France DÉTAIL GMS (TTC) | Supermarché | hebdomadaire |
+| `M3027` | Légumes DÉTAIL magasins spécialisés bio (TTC) | Bio | hebdomadaire |
+| `M3026` | Fruits DÉTAIL magasins spécialisés bio (TTC) | Bio | hebdomadaire |
 
-`prix_supermarche` et `prix_bio` ne sont pas fournis par le RNM (qui couvre le prix de gros/marché) :
-ils restent des estimations internes tant qu'une seconde source n'est pas branchée.
+Pour chaque produit :
+
+1. les libellés RNM sont rattachés à un `slug` via `scripts/mapping-rnm.json` (voir ci-dessous) ;
+2. chaque cotation est ramenée à un prix au kg ou à la pièce (« (les 6 pièces) », « (la barq. 125g) »,
+   « (les 10kg) »…) ; les unités inexploitables (filet, botte, colis sans poids) sont ignorées ;
+3. on garde l'unité du produit (`unite_prix` du CSV), sinon l'unité la plus fréquente ;
+4. si des cotations d'origine France existent, on ne garde qu'elles ;
+5. le prix affiché est la **médiane** des cotations retenues ; la variation hebdo aussi.
+
+En bio, les magasins spécialisés passent avant les lignes « biologique » vendues en GMS.
+
+Le script ne casse jamais le workflow : une page indisponible garde les valeurs précédentes.
+
+```bash
+node scripts/fetch-prices.mjs                 # en ligne
+node scripts/fetch-prices.mjs --dir=chemin/   # sur des pages déjà téléchargées (M2502.html…), pour tester
+```
+
+### mapping-rnm.json
+
+```json
+"chou_rouge": { "motifs": ["CHOU"], "contient": "rouge" },
+"tomate": { "motifs": ["TOMATE"], "exclure": ["cerise", "cocktail"] }
+```
+
+- `motifs` : début du libellé RNM (l'espèce, en majuscules, accents ignorés) ;
+- `contient` : mot obligatoire ailleurs dans le libellé (variété) ;
+- `exclure` : mots qui écartent la ligne.
+
+La règle la plus spécifique gagne (`contient` d'abord, puis le motif le plus long) : « POMME DE TERRE »
+ne tombe donc pas dans « pomme ». En fin d'exécution, le script liste les espèces RNM non rattachées :
+pratique pour enrichir le catalogue.
+
+### Couverture actuelle
+
+Environ 55 produits sur 88 ont au moins un prix réel (supermarché ~26, bio ~51) ; cela varie
+avec la saison, le RNM ne cotant que ce qui est en rayon. Les autres gardent l'estimation du CSV.
+
+## Images produits
+
+`public/produits/<slug>.webp` : photos libres issues de Wikimedia Commons, détourées (fond transparent)
+et recadrées en 512×512. Auteur, licence et lien de chaque photo : `data/credits-images.json`, affichés
+sous la photo et sur la page `/credits` (obligatoire pour les licences CC BY / CC BY-SA).
+
+Pour ajouter un produit sans image, la fiche affiche l'initiale en attendant. Pour en ajouter une :
+choisir une photo libre sur Commons, la détourer (ex. `rembg`, outil libre), l'exporter en WebP
+512×512 transparent dans `public/produits/`, et ajouter ses crédits dans `data/credits-images.json`.

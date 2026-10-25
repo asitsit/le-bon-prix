@@ -105,27 +105,48 @@ Cette logique reste volontairement simple au MVP (pas de prise en compte météo
 
 ---
 
-## 5. Intégration future des prix (V1.1)
+## 5. Prix réels (V1.1) — fait en octobre 2026
 
-Rappel de la décision prise : démarrage **national**, source **FranceAgriMer / RNM** via data.gouv.fr (Licence Ouverte).
+Source : **FranceAgriMer / RNM**, licence ouverte (réutilisation autorisée, y compris commerciale, avec
+citation de la source).
 
-⚠️ **Mise à jour (vérifié en août 2026)** : contrairement à l'hypothèse initiale, il n'existe pas de
-CSV/API public en libre téléchargement pour les cotations RNM. Le dataset publié sur data.gouv.fr
-(`cotations-du-reseau-des-nouvelles-des-marches`) n'est mis à jour qu'une fois par an et pointe vers
-`visionet.franceagrimer.fr`, un tableau de bord interactif sans export automatisable. Un accès
-personnalisé (API ou export Excel) s'obtient sur demande auprès de `contact-rnm@franceagrimer.fr`.
-Voir `scripts/README.md` pour le détail.
+L'hypothèse d'août 2026 (« pas d'export public ») était incomplète : le dataset data.gouv.fr n'est
+qu'annuel, mais le site public `rnm.franceagrimer.fr` publie chaque semaine des pages HTML « prix par
+marché », dont des **prix de détail TTC** relevés en grande surface (GMS) et en magasins bio. `scripts/fetch-prices.mjs` les lit directement (4 pages, aucune
+clé), voir `scripts/README.md`.
 
-L'automatisation a néanmoins été construite pour être prête dès qu'un vrai accès sera obtenu :
+| Série affichée | Source |
+|---|---|
+| Supermarché | RNM, DÉTAIL GMS (TTC, hebdo) — repli : estimation CSV |
+| Bio | RNM, DÉTAIL magasins spécialisés bio (TTC, hebdo) — repli : estimation CSV |
+| Marché (plein air) | Estimation CSV : le RNM ne suit pas ce circuit |
 
-1. Script `scripts/fetch-prices.mjs` : lit un export `data/rnm-export.csv` (colonnes `produit,prix,unite,date`) — ✅ fait, fonctionne aujourd'hui avec un dépôt manuel du fichier, en attendant un accès API.
-2. Mapping RNM → `slug` interne dans `scripts/mapping-rnm.json` — ✅ fait pour les 78 produits d'origine européenne, avec des libellés à confirmer une fois un vrai export obtenu.
-3. Mise à jour de `produits.csv` avec `prix_maj` (date) et `prix_source` — ✅ fait.
-4. GitHub Action programmée (cron hebdomadaire, tous les lundis) : `.github/workflows/update-prices.yml` — ✅ fait, exécute le script, commit `data/produits.csv` et pousse si changement, ce qui déclenche le redéploiement Vercel.
-5. Affichage obligatoire sur chaque fiche : date de mise à jour + source — ✅ fait, non négociable pour la crédibilité (cf. cadrage produit, section "manques identifiés").
+Ceci tranche le point de vigilance de la section 3 : `prix_marche` reste le prix *de détail* au marché
+de plein air (estimé). Le prix de gros (Rungis) a été testé puis retiré de l'affichage (octobre 2026).
 
-`prix_supermarche` et `prix_bio` restent des estimations internes : le RNM ne couvre que les prix de
-gros/marché, une seconde source resterait à brancher pour les automatiser aussi.
+Automatisation : `.github/workflows/update-prices.yml` (mardi et vendredi) lance le script, vérifie le
+build, puis commite `data/prix-rnm.json` et `data/prix-historique.json` → redéploiement Vercel.
+
+Chaque fiche affiche la source (badge RNM / estimation), la date du relevé et la tendance hebdo.
+
+Si FranceAgriMer modifie la structure de ses pages, le script garde les valeurs précédentes et l'indique
+dans les logs du workflow ; il faudra alors adapter `parserPageMarche()`. Un accès API officiel reste
+possible sur demande (`contact-rnm@franceagrimer.fr`) si l'on veut plus de robustesse.
+
+---
+
+## 5 bis. Saison dynamique, onglets et liste de courses
+
+- **Saison à la date du jour** : le HTML statique est généré au build, mais `src/scripts/saison-client.ts`
+  recalcule tous les statuts (badges, calendriers, onglet « De saison ») dans le navigateur, à la date du
+  visiteur. Le site n'affiche donc plus « août » s'il n'a pas été reconstruit.
+- **Onglets** : Tous (accueil, A→Z, recherche + filtres fruits/légumes + tranches de lettres), De saison
+  (choix du mois, section « bientôt »), Ma liste, Suggestions. Barre d'onglets en bas sur mobile.
+- **Liste de courses** : `localStorage` uniquement (`src/scripts/liste-client.ts`), pas de compte. Passage
+  en base de données prévu en V2 avec les favoris.
+- **Suggestions** : formulaire envoyé à un service de formulaires (`PUBLIC_SUGGESTIONS_ENDPOINT`, ex.
+  Formspree), repli sur un e-mail pré-rempli. Voir `.env.example`.
+- **Images** : photos libres Wikimedia Commons détourées, crédits sur chaque fiche et sur `/credits`.
 
 ---
 
@@ -155,5 +176,5 @@ gros/marché, une seconde source resterait à brancher pour les automatiser auss
 | Phase | Contenu |
 |---|---|
 | **V1 (MVP)** | Accueil + recherche + fiches produit, données statiques (CSV → JSON manuel), déploiement Netlify/Vercel |
-| **V1.1** | Automatisation des prix (RNM), badge "mis à jour le...", cron hebdomadaire |
+| **V1.1** ✅ | Prix réels RNM (supermarché, bio), historique, saison dynamique, liste de courses locale, suggestions |
 | **V2** | Base de recettes liées par `slug`, filtres avancés, favoris (nécessite base de données) |
