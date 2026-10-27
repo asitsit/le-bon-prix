@@ -1,33 +1,46 @@
 {
   "_doc": "Généré par scripts/fetch-prices.mjs — ne pas éditer à la main.",
-  "maj": "2026-10-25T09:56:42.136Z",
+  "maj": "2026-10-27T11:38:47.548Z",
   "licence": "Licence ouverte FranceAgriMer — source : RNM, https://rnm.franceagrimer.fr",
   "produits": {
     "citron": {
       "bio": {
         "prix": 4.25,
         "unite": "kg",
-        "variation": 0.05,
+        "variation": 0,
         "nb_cotations": 1,
         "libelles": [
           "CITRON U.E. biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "clementine": {
-      "bio": {
-        "prix": 5.45,
+      "supermarche": {
+        "prix": 3.09,
         "unite": "kg",
-        "variation": -0.73,
+        "variation": null,
         "nb_cotations": 1,
         "libelles": [
+          "CLÉMENTINE hors Fr. vrac"
+        ],
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
+        "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
+      },
+      "bio": {
+        "prix": 6.46,
+        "unite": "kg",
+        "variation": 0,
+        "nb_cotations": 2,
+        "libelles": [
+          "CLÉMENTINE Corse feuille biologique (le kg)",
           "CLÉMENTINE U.E. biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
@@ -35,171 +48,184 @@
       "bio": {
         "prix": 5.36,
         "unite": "kg",
-        "variation": -0.47,
+        "variation": 0,
         "nb_cotations": 1,
         "libelles": [
           "COING France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "figue": {
       "bio": {
-        "prix": 13.63,
+        "prix": 13.38,
         "unite": "kg",
-        "variation": 0.88,
+        "variation": -0.25,
         "nb_cotations": 1,
         "libelles": [
           "FIGUE fraîche France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "framboise": {
       "supermarche": {
-        "prix": 26.15,
+        "prix": 25.07,
         "unite": "kg",
-        "variation": 0.51,
+        "variation": -1.08,
         "nb_cotations": 1,
         "libelles": [
           "FRAMBOISE France barq.125g"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       }
     },
     "kiwi": {
       "supermarche": {
-        "prix": 0.69,
+        "prix": 0.82,
         "unite": "pièce",
-        "variation": null,
+        "variation": 0.13,
         "nb_cotations": 1,
         "libelles": [
           "KIWI vert hors UE. vrac (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 8.34,
+        "prix": 8.8,
         "unite": "kg",
-        "variation": -0.5,
+        "variation": 0.45,
         "nb_cotations": 2,
         "libelles": [
           "KIWI Gold Import biologique (le kg)",
           "KIWI Hayward Import biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "mandarine": {
       "bio": {
-        "prix": 4.64,
+        "prix": 4.68,
         "unite": "kg",
-        "variation": 0.14,
+        "variation": 0.04,
         "nb_cotations": 1,
         "libelles": [
           "MANDARINE U.E. biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
+        "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
+      }
+    },
+    "noisette": {
+      "bio": {
+        "prix": 14.58,
+        "unite": "kg",
+        "variation": null,
+        "nb_cotations": 1,
+        "libelles": [
+          "NOISETTE France biologique (le kg)"
+        ],
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "noix": {
       "supermarche": {
-        "prix": 5.7,
+        "prix": 6.39,
         "unite": "kg",
-        "variation": -0.54,
+        "variation": 0.69,
         "nb_cotations": 1,
         "libelles": [
           "NOIX sans label France vrac"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 9.17,
+        "prix": 9.21,
         "unite": "kg",
-        "variation": 0.02,
+        "variation": 0.04,
         "nb_cotations": 1,
         "libelles": [
           "NOIX France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "orange": {
       "supermarche": {
-        "prix": 2.95,
+        "prix": 2.88,
         "unite": "kg",
-        "variation": -0.02,
+        "variation": -0.07,
         "nb_cotations": 1,
         "libelles": [
           "ORANGE hors Fr. vrac"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 4.01,
+        "prix": 3.93,
         "unite": "kg",
-        "variation": -0.11,
+        "variation": -0.08,
         "nb_cotations": 1,
         "libelles": [
           "ORANGE U.E. biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "pamplemousse": {
       "bio": {
-        "prix": 1.33,
+        "prix": 1.63,
         "unite": "pièce",
-        "variation": -0.13,
+        "variation": 0.3,
         "nb_cotations": 1,
         "libelles": [
           "POMELOS U.E. biologique vendu à la pièce (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "poire": {
       "supermarche": {
-        "prix": 3.41,
+        "prix": 3.6,
         "unite": "kg",
-        "variation": 0.03,
-        "nb_cotations": 4,
+        "variation": 0.17,
+        "nb_cotations": 3,
         "libelles": [
           "POIRE Conférence France vrac",
           "POIRE Doyenne du comice France vrac",
-          "POIRE Guyot ou Limonera France vrac",
           "POIRE Williams verte France vrac"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 4.23,
+        "prix": 4.21,
         "unite": "kg",
-        "variation": 0.1,
+        "variation": -0.03,
         "nb_cotations": 4,
         "libelles": [
           "POIRE autres variétés France biologique (le kg)",
@@ -207,16 +233,16 @@
           "POIRE Guyot France biologique (le kg)",
           "POIRE Williams France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "pomme": {
       "supermarche": {
-        "prix": 2.59,
+        "prix": 2.6,
         "unite": "kg",
-        "variation": 0.1,
+        "variation": 0,
         "nb_cotations": 10,
         "libelles": [
           "POMME Bicolore France sachet",
@@ -228,30 +254,30 @@
           "POMME Granny smith France 136/180g vrac",
           "POMME Granny smith France +170g vrac"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 3.33,
+        "prix": 3.32,
         "unite": "kg",
-        "variation": -0.01,
+        "variation": -0.14,
         "nb_cotations": 3,
         "libelles": [
           "POMME autres variétés France biologique (le kg)",
           "POMME Bicolore France biologique (le kg)",
           "POMME Golden France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "prune": {
       "supermarche": {
-        "prix": 4.2,
+        "prix": 4.35,
         "unite": "kg",
-        "variation": 0.1,
+        "variation": 0.14,
         "nb_cotations": 5,
         "libelles": [
           "PRUNE jaune autre ou inconnue France vrac",
@@ -260,29 +286,16 @@
           "PRUNE rouge France vrac",
           "PRUNE verte Reine-Claude de Bavay France vrac"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
-      },
-      "bio": {
-        "prix": 7.15,
-        "unite": "kg",
-        "variation": 0.04,
-        "nb_cotations": 2,
-        "libelles": [
-          "PRUNE rouge-bleue France biologique (le kg)",
-          "PRUNE verte Reine-Claude Dorée France biologique (le kg)"
-        ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
-        "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "raisin": {
       "supermarche": {
-        "prix": 5.32,
+        "prix": 5.31,
         "unite": "kg",
-        "variation": 0.33,
+        "variation": -0.01,
         "nb_cotations": 7,
         "libelles": [
           "RAISIN blanc Chasselas AOP Moissac France barq.",
@@ -293,137 +306,123 @@
           "RAISIN noir Muscat Hambourg sans label France barq.",
           "RAISIN noir Muscat Hambourg sans label France vrac"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 5.61,
+        "prix": 5.99,
         "unite": "kg",
-        "variation": 0.33,
+        "variation": 0.38,
         "nb_cotations": 2,
         "libelles": [
           "RAISIN blanc France biologique (le kg)",
           "RAISIN noir France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "ail": {
       "supermarche": {
-        "prix": 11.67,
+        "prix": 11.6,
         "unite": "kg",
-        "variation": 0.22,
+        "variation": -0.07,
         "nb_cotations": 1,
         "libelles": [
           "AIL blanc sec France vrac"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 17.66,
+        "prix": 17.69,
         "unite": "kg",
-        "variation": 0.06,
+        "variation": 0.03,
         "nb_cotations": 1,
         "libelles": [
           "AIL blanc sec France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
-      }
-    },
-    "artichaut": {
-      "supermarche": {
-        "prix": 2.94,
-        "unite": "pièce",
-        "variation": -0.15,
-        "nb_cotations": 1,
-        "libelles": [
-          "ARTICHAUT Globuleux France (la pièce)"
-        ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
-        "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       }
     },
     "aubergine": {
       "supermarche": {
-        "prix": 3.1,
+        "prix": 3.03,
         "unite": "kg",
-        "variation": -0.23,
+        "variation": -0.07,
         "nb_cotations": 1,
         "libelles": [
           "AUBERGINE violette France vrac"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 5.94,
+        "prix": 5.91,
         "unite": "kg",
-        "variation": 0.22,
+        "variation": -0.03,
         "nb_cotations": 1,
         "libelles": [
           "AUBERGINE longue-violette France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "betterave": {
       "bio": {
-        "prix": 3.74,
+        "prix": 3.62,
         "unite": "kg",
-        "variation": 0.1,
+        "variation": -0.12,
         "nb_cotations": 1,
         "libelles": [
           "BETTERAVE ROUGE ronde crue France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "blette": {
       "bio": {
-        "prix": 4.68,
+        "prix": 4.35,
         "unite": "kg",
-        "variation": -0.09,
+        "variation": -0.33,
         "nb_cotations": 1,
         "libelles": [
           "BETTE France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "brocoli": {
       "bio": {
-        "prix": 4.65,
+        "prix": 5.85,
         "unite": "kg",
-        "variation": -0.78,
+        "variation": 1.2,
         "nb_cotations": 1,
         "libelles": [
           "CHOU Brocoli France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "carotte": {
       "supermarche": {
-        "prix": 1.77,
+        "prix": 1.75,
         "unite": "kg",
-        "variation": 0.03,
+        "variation": -0.03,
         "nb_cotations": 4,
         "libelles": [
           "CAROTTE France lavée sachet 1,5 kg",
@@ -431,183 +430,183 @@
           "CAROTTE France lavée sachet 2kg",
           "CAROTTE France lavée vrac"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 3.27,
+        "prix": 3.28,
         "unite": "kg",
-        "variation": -0.06,
+        "variation": 0.01,
         "nb_cotations": 2,
         "libelles": [
           "CAROTTE France lavée biologique (le kg)",
           "CAROTTE France non lavée biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "celeri_branche": {
       "bio": {
-        "prix": 5.61,
+        "prix": 5.25,
         "unite": "kg",
-        "variation": 0.3,
+        "variation": -0.36,
         "nb_cotations": 1,
         "libelles": [
           "CÉLERI-BRANCHE France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "celeri_rave": {
       "bio": {
-        "prix": 4.82,
+        "prix": 4.53,
         "unite": "kg",
-        "variation": 0.05,
+        "variation": -0.29,
         "nb_cotations": 1,
         "libelles": [
           "CÉLERI-RAVE France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "champignon_de_paris": {
       "bio": {
-        "prix": 12.26,
+        "prix": 12.27,
         "unite": "kg",
-        "variation": -0.28,
+        "variation": 0.01,
         "nb_cotations": 1,
         "libelles": [
           "CHAMPIGNON DE PARIS France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "chou_blanc": {
       "bio": {
-        "prix": 3.79,
+        "prix": 3.81,
         "unite": "pièce",
-        "variation": -0.01,
+        "variation": 0.02,
         "nb_cotations": 1,
         "libelles": [
           "CHOU blanc France biologique vendu à la pièce (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "chou_rouge": {
       "bio": {
-        "prix": 3.86,
+        "prix": 3.92,
         "unite": "pièce",
-        "variation": -0.16,
+        "variation": 0.06,
         "nb_cotations": 1,
         "libelles": [
           "CHOU rouge France biologique vendu à la pièce (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "chou_fleur": {
       "supermarche": {
-        "prix": 3.02,
+        "prix": 2.53,
         "unite": "pièce",
-        "variation": -0.54,
+        "variation": -0.49,
         "nb_cotations": 1,
         "libelles": [
           "CHOU FLEUR France (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 4.32,
+        "prix": 3.77,
         "unite": "pièce",
-        "variation": -0.56,
+        "variation": -0.55,
         "nb_cotations": 1,
         "libelles": [
           "CHOU FLEUR France couronné biologique (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "concombre": {
       "supermarche": {
-        "prix": 1.42,
+        "prix": 1.46,
         "unite": "pièce",
-        "variation": -0.02,
+        "variation": 0.04,
         "nb_cotations": 1,
         "libelles": [
           "CONCOMBRE France (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 2.34,
+        "prix": 2.46,
         "unite": "pièce",
-        "variation": -0.07,
+        "variation": 0.12,
         "nb_cotations": 1,
         "libelles": [
           "CONCOMBRE France biologique (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "courge_butternut": {
       "bio": {
-        "prix": 3.15,
+        "prix": 3.34,
         "unite": "kg",
-        "variation": -0.54,
+        "variation": 0.19,
         "nb_cotations": 1,
         "libelles": [
           "COURGE Butternut France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "courge_potimarron": {
       "supermarche": {
-        "prix": 2.49,
+        "prix": 2.05,
         "unite": "pièce",
-        "variation": 0.21,
+        "variation": -0.44,
         "nb_cotations": 1,
         "libelles": [
           "COURGE Potimarron France (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 3.07,
+        "prix": 3.25,
         "unite": "kg",
-        "variation": -0.39,
+        "variation": 0.18,
         "nb_cotations": 1,
         "libelles": [
           "COURGE Potimarron France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
@@ -615,131 +614,131 @@
       "supermarche": {
         "prix": 2.28,
         "unite": "kg",
-        "variation": -0.05,
+        "variation": -0.01,
         "nb_cotations": 2,
         "libelles": [
           "COURGETTE longue verte France filet 1kg",
           "COURGETTE longue verte France vrac"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 3.74,
+        "prix": 3.87,
         "unite": "kg",
-        "variation": 0.04,
+        "variation": 0.13,
         "nb_cotations": 1,
         "libelles": [
           "COURGETTE verte France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "echalote": {
       "bio": {
-        "prix": 5.97,
+        "prix": 6.23,
         "unite": "kg",
-        "variation": -0.11,
+        "variation": 0.26,
         "nb_cotations": 1,
         "libelles": [
           "ÉCHALOTE France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "endive": {
       "supermarche": {
-        "prix": 3.8,
+        "prix": 3.48,
         "unite": "kg",
-        "variation": 0.12,
+        "variation": -0.31,
         "nb_cotations": 2,
         "libelles": [
           "ENDIVE France sachet 1kg",
           "ENDIVE France vrac"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
         "prix": 9.76,
         "unite": "kg",
-        "variation": 0.01,
+        "variation": 0,
         "nb_cotations": 1,
         "libelles": [
           "ENDIVE France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "epinard": {
       "bio": {
-        "prix": 7.14,
+        "prix": 6.9,
         "unite": "kg",
-        "variation": -0.14,
+        "variation": -0.24,
         "nb_cotations": 1,
         "libelles": [
           "ÉPINARD France feuille biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "fenouil": {
       "bio": {
-        "prix": 6.61,
+        "prix": 6.65,
         "unite": "kg",
-        "variation": 0.19,
+        "variation": 0.04,
         "nb_cotations": 1,
         "libelles": [
           "FENOUIL France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "haricot_vert": {
       "bio": {
-        "prix": 11.68,
+        "prix": 10.66,
         "unite": "kg",
-        "variation": 0.44,
+        "variation": -1.02,
         "nb_cotations": 1,
         "libelles": [
           "HARICOT VERT France biologique ramassé main (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "laitue": {
       "supermarche": {
-        "prix": 1.63,
+        "prix": 1.61,
         "unite": "pièce",
-        "variation": -0.03,
+        "variation": -0.02,
         "nb_cotations": 3,
         "libelles": [
           "LAITUE Batavia France (la pièce)",
           "LAITUE Feuille de chêne France (la pièce)",
           "LAITUE pommée France (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 1.71,
+        "prix": 1.79,
         "unite": "pièce",
-        "variation": 0.01,
+        "variation": 0.03,
         "nb_cotations": 4,
         "libelles": [
           "LAITUE Batavia France biologique (la pièce)",
@@ -747,8 +746,8 @@
           "LAITUE Feuille de chêne rouge France biologique (la pièce)",
           "LAITUE pommée France biologique (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
@@ -756,60 +755,61 @@
       "bio": {
         "prix": 4.19,
         "unite": "kg",
-        "variation": -0.25,
-        "nb_cotations": 1,
+        "variation": 0.03,
+        "nb_cotations": 2,
         "libelles": [
+          "NAVET jaune France biologique (le kg)",
           "NAVET rond violet France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "oignon": {
       "supermarche": {
-        "prix": 2.44,
+        "prix": 2.41,
         "unite": "kg",
-        "variation": -0.06,
+        "variation": -0.03,
         "nb_cotations": 1,
         "libelles": [
           "OIGNON jaune France filet 1kg"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 3.53,
+        "prix": 3.57,
         "unite": "kg",
-        "variation": 0,
+        "variation": 0.04,
         "nb_cotations": 2,
         "libelles": [
           "OIGNON jaune France biologique (le kg)",
           "OIGNON rouge France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "panais": {
       "bio": {
-        "prix": 4.7,
+        "prix": 4.71,
         "unite": "kg",
-        "variation": -0.38,
+        "variation": 0.01,
         "nb_cotations": 1,
         "libelles": [
           "PANAIS France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "poireau": {
       "supermarche": {
-        "prix": 2.97,
+        "prix": 2.86,
         "unite": "kg",
         "variation": -0.11,
         "nb_cotations": 2,
@@ -817,55 +817,55 @@
           "POIREAU France entier botte 1kg",
           "POIREAU France entier vrac"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 4.66,
+        "prix": 4.59,
         "unite": "kg",
-        "variation": -0.13,
+        "variation": -0.07,
         "nb_cotations": 1,
         "libelles": [
           "POIREAU France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "poivron": {
       "supermarche": {
-        "prix": 4.78,
+        "prix": 4.82,
         "unite": "kg",
-        "variation": 0.18,
+        "variation": 0.04,
         "nb_cotations": 2,
         "libelles": [
           "POIVRON rouge carré France vrac",
           "POIVRON vert carré France vrac"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 6.12,
+        "prix": 5.43,
         "unite": "kg",
-        "variation": 0.08,
+        "variation": -0.69,
         "nb_cotations": 1,
         "libelles": [
           "POIVRON France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "pomme_de_terre": {
       "supermarche": {
-        "prix": 1.46,
+        "prix": 1.52,
         "unite": "kg",
-        "variation": 0,
+        "variation": 0.02,
         "nb_cotations": 6,
         "libelles": [
           "POMME DE TERRE de conservation France lavée sac 5kg",
@@ -875,28 +875,28 @@
           "POMME DE TERRE vapeur ou rissolée de conservation France filet 2,5kg",
           "POMME DE TERRE vapeur ou rissolée de conservation France filet 2kg"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 2.37,
+        "prix": 2.34,
         "unite": "kg",
-        "variation": -0.07,
+        "variation": -0.03,
         "nb_cotations": 1,
         "libelles": [
           "POMME DE TERRE de conservation France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "tomate": {
       "supermarche": {
-        "prix": 3.72,
+        "prix": 3.7,
         "unite": "kg",
-        "variation": 0.09,
+        "variation": -0.05,
         "nb_cotations": 5,
         "libelles": [
           "TOMATE côtelée rouge France vrac",
@@ -905,12 +905,12 @@
           "TOMATE ronde rouge France filet 1kg",
           "TOMATE ronde rouge France grappe vrac"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 6.97,
+        "prix": 7.02,
         "unite": "kg",
         "variation": 0.05,
         "nb_cotations": 3,
@@ -919,36 +919,36 @@
           "TOMATE ronde France biologique (le kg)",
           "TOMATE ronde France grappe biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "topinambour": {
       "bio": {
-        "prix": 4.2,
+        "prix": 4.02,
         "unite": "kg",
-        "variation": -0.03,
+        "variation": -0.18,
         "nb_cotations": 1,
         "libelles": [
           "TOPINAMBOUR France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "banane": {
       "supermarche": {
-        "prix": 1.95,
+        "prix": 2,
         "unite": "kg",
-        "variation": -0.05,
+        "variation": 0.05,
         "nb_cotations": 1,
         "libelles": [
           "BANANE France vrac"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
@@ -959,91 +959,105 @@
         "libelles": [
           "BANANE Import biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "grenade": {
       "bio": {
-        "prix": 7.06,
+        "prix": 6.81,
         "unite": "kg",
-        "variation": -0.12,
+        "variation": -0.25,
         "nb_cotations": 1,
         "libelles": [
           "GRENADE France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
+        "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
+      }
+    },
+    "kaki": {
+      "bio": {
+        "prix": 8.19,
+        "unite": "kg",
+        "variation": null,
+        "nb_cotations": 1,
+        "libelles": [
+          "KAKI U.E. biologique (le kg)"
+        ],
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "patate_douce": {
       "bio": {
-        "prix": 4.99,
+        "prix": 4.76,
         "unite": "kg",
-        "variation": 0.05,
+        "variation": -0.23,
         "nb_cotations": 1,
         "libelles": [
           "PATATE DOUCE France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "chou_chinois": {
       "bio": {
-        "prix": 5.19,
+        "prix": 5.18,
         "unite": "kg",
-        "variation": -0.19,
+        "variation": -0.01,
         "nb_cotations": 1,
         "libelles": [
           "CHOU Chinois France biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "ananas": {
       "supermarche": {
-        "prix": 2.49,
+        "prix": 2.54,
         "unite": "pièce",
-        "variation": 0.1,
+        "variation": 0.05,
         "nb_cotations": 1,
         "libelles": [
           "ANANAS standard (hors Victoria) (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
-        "prix": 2.85,
-        "unite": "kg",
-        "variation": -0.01,
+        "prix": 2.97,
+        "unite": "pièce",
+        "variation": null,
         "nb_cotations": 1,
         "libelles": [
-          "ANANAS Import biologique (le kg)"
+          "ANANAS Import biologique vendu à la pièce (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "mangue": {
       "bio": {
-        "prix": 2.45,
+        "prix": 2.33,
         "unite": "pièce",
-        "variation": -0.01,
+        "variation": -0.12,
         "nb_cotations": 2,
         "libelles": [
           "MANGUE Import biologique vendu à la pièce (la pièce)",
           "MANGUE U.E. biologique (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
@@ -1051,40 +1065,40 @@
       "supermarche": {
         "prix": 1.06,
         "unite": "pièce",
-        "variation": -0.03,
+        "variation": 0,
         "nb_cotations": 2,
         "libelles": [
           "AVOCAT hors Fr. filet (la pièce)",
           "AVOCAT hors Fr. vrac (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en grande surface (TTC)"
       },
       "bio": {
         "prix": 1.89,
         "unite": "pièce",
-        "variation": 0.09,
+        "variation": 0,
         "nb_cotations": 1,
         "libelles": [
           "AVOCAT Hass Import biologique vendu à la pièce (la pièce)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     },
     "gingembre": {
       "bio": {
-        "prix": 9.94,
+        "prix": 10.1,
         "unite": "kg",
-        "variation": -0.2,
+        "variation": 0.16,
         "nb_cotations": 1,
         "libelles": [
           "GINGEMBRE Import biologique (le kg)"
         ],
-        "date": "2026-10-12",
-        "periode": "semaine 42-2026",
+        "date": "2026-10-19",
+        "periode": "semaine 43-2026",
         "source": "RNM FranceAgriMer — prix de détail en magasins bio (TTC)"
       }
     }
